@@ -1,5 +1,5 @@
 // ВСТАВЬ СЮДА URL ТВОЕГО WEB APP ИЗ GOOGLE APPS SCRIPT
-const API_URL = "https://script.google.com/macros/s/AKfycbwN6aaE7Rl3Rhq_KuzjwlUWx2UQln2iruvwNG55EoVnagKOprCacAhxyGveG5A8kuao/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyz5iHfF9eBSH-uKIMob6L8Hu49jPAMFaxccVq1oK7YWoqYWnTAV5yXuaY_16-74b1atw/exec";
 
 let userId;
 
