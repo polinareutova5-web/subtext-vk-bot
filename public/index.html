@@ -222,15 +222,45 @@
         <div id="lessons-list" class="lessons-grid"></div>
       </div>
 
-      <!-- ДЗ -->
-      <div id="homework" class="section hidden">
-        <h2>📤 Сдать ДЗ</h2>
-        <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
-        <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx">
-        <button onclick="submitHomework()">Отправить ДЗ</button>
-        <p id="hwStatus"></p>
-      </div>
-
+<!-- ДЗ -->
+<div id="homework" class="section hidden">
+  <h2>📤 Сдать ДЗ</h2>
+  
+  <div style="margin-bottom: 1rem;">
+    <label><strong>Ваш текст или ссылка на файл:</strong></label><br>
+    <textarea id="hwText" placeholder="Напишите ответ или вставьте ссылку на Google Drive/Disk..." 
+              style="width: 100%; height: 100px; margin: 0.5rem 0;"></textarea>
+  </div>
+  
+  <div style="margin-bottom: 1rem;">
+    <label><strong>Или загрузите файл:</strong></label><br>
+    <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx,.txt">
+    <small style="color: #666; display: block; margin-top: 0.3rem;">
+      Поддерживаются: изображения, PDF, Word, текстовые файлы
+    </small>
+  </div>
+  
+  <div style="display: flex; gap: 10px; margin-top: 1rem;">
+    <button onclick="submitHomework()" style="padding: 0.7rem 1.5rem; background: #2e7d32; color: white; border: none; border-radius: 6px; cursor: pointer;">
+      📎 Отправить ДЗ
+    </button>
+    <button onclick="clearHomeworkForm()" style="padding: 0.7rem 1.5rem; background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
+      Очистить
+    </button>
+  </div>
+  
+  <p id="hwStatus" style="margin-top: 1rem;"></p>
+  
+  <div style="background: #f0f8ff; padding: 1rem; border-radius: 8px; margin-top: 1rem; border-left: 4px solid #2196F3;">
+    <strong>💡 Как отправить файл:</strong>
+    <ol style="margin: 0.5rem 0; padding-left: 1.5rem;">
+      <li>Загрузите файл в <a href="https://drive.google.com" target="_blank">Google Drive</a> или <a href="https://disk.yandex.ru" target="_blank">Яндекс.Диск</a></li>
+      <li>Откройте доступ по ссылке (Настройки доступа → Доступ по ссылке)</li>
+      <li>Скопируйте ссылку и вставьте в поле выше</li>
+      <li>Или используйте кнопку "Выбрать файл" для загрузки</li>
+    </ol>
+  </div>
+</div>
       <!-- Магазин -->
       <div id="shop" class="section hidden">
         <h2>🛒 Магазин</h2>
