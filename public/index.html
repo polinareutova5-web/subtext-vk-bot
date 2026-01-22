@@ -68,6 +68,48 @@
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+    .shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.shop-item {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+.shop-item h3 {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.shop-item .price {
+  font-weight: bold;
+  color: #e74c3c;
+  margin: 0.5rem 0;
+}
+
+.buy-btn {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.buy-btn:hover {
+  background: #1b5e20;
+}
   </style>
 </head>
 <body>
@@ -110,7 +152,10 @@
     <!-- Магазин -->
     <div id="shop" class="section hidden">
       <h2>🛒 Магазин</h2>
-      <div id="shop-items"></div>
+     <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
+  💰 Ваши монеты: <span id="shop-coins">0</span>
+</div>
+<div id="shop-items" class="shop-grid"></div>
     </div>
   </div>
 
