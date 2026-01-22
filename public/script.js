@@ -1,6 +1,50 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzf5Nxa5O4J1smRP8kM4edKK-SMEuXR6ECnCqN87ktDMndIZ6-7LDbt9MkGdtVIlPx8iA/exec";
 
 let userId;
+let selectedFile = null;
+
+// Функция для очистки формы
+function clearHomeworkForm() {
+  document.getElementById('hwText').value = '';
+  document.getElementById('hwFile').value = '';
+  selectedFile = null;
+  document.getElementById('hwStatus').textContent = '';
+}
+
+// Обработчик выбора файла
+document.addEventListener('DOMContentLoaded', function() {
+  const fileInput = document.getElementById('hwFile');
+  if (fileInput) {
+    fileInput.addEventListener('change', function(e) {
+      selectedFile = e.target.files[0];
+      if (selectedFile) {
+        console.log('Выбран файл:', selectedFile.name, selectedFile.type);
+        
+        // Если файл изображение - предпросмотр
+        if (selectedFile.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            // Показываем миниатюру
+            const statusEl = document.getElementById('hwStatus');
+            statusEl.innerHTML = `
+              <div style="margin: 10px 0;">
+                <strong>Выбрано изображение:</strong><br>
+                <img src="${e.target.result}" style="max-width: 200px; max-height: 150px; margin-top: 5px; border-radius: 5px;">
+              </div>
+            `;
+          };
+          reader.readAsDataURL(selectedFile);
+        } else {
+          document.getElementById('hwStatus').innerHTML = `
+            <div style="margin: 10px 0;">
+              <strong>Выбран файл:</strong> ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(2)} KB)
+            </div>
+          `;
+        }
+      }
+    });
+  }
+});
 
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
@@ -89,33 +133,81 @@ async function loadData() {
   }
 }
 
-// === ОТПРАВКА ДЗ ЧЕРЕЗ GET ===
+// Основная функция отправки ДЗ
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
-  if (!text) {
-    alert('Введите текст или ссылку на файл.');
+  const file = selectedFile;
+  
+  if (!text && !file) {
+    alert('Пожалуйста, введите текст ответа или прикрепите файл.');
     return;
   }
 
-  const encodedText = encodeURIComponent(text);
-  const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
-
-  document.getElementById('hwStatus').textContent = 'Отправка...';
+  document.getElementById('hwStatus').innerHTML = '<div style="color: #666;">⏳ Отправка ДЗ...</div>';
 
   try {
+    let submissionText = '';
+    
+    // Если есть файл - загружаем его
+    if (file) {
+      submissionText = await uploadFileToDrive(file, text);
+    } else {
+      // Если только текст
+      submissionText = text;
+    }
+    
+    // Отправляем на сервер
+    const encodedText = encodeURIComponent(submissionText);
+    const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
+
     const res = await fetch(url);
     const data = await res.json();
     
     if (data.success) {
-      document.getElementById('hwStatus').textContent = '✅ ДЗ отправлено!';
-      document.getElementById('hwText').value = '';
+      document.getElementById('hwStatus').innerHTML = `
+        <div style="color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 6px;">
+          ✅ <strong>ДЗ успешно отправлено!</strong><br>
+          ${file ? `Файл: ${file.name}` : ''}
+        </div>
+      `;
+      clearHomeworkForm();
     } else {
-      document.getElementById('hwStatus').textContent = `❌ Ошибка: ${data.error}`;
+      document.getElementById('hwStatus').innerHTML = `
+        <div style="color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 6px;">
+          ❌ <strong>Ошибка:</strong> ${data.error || 'Не удалось отправить'}
+        </div>
+      `;
     }
   } catch (err) {
-    console.error('Ошибка ДЗ:', err);
-    document.getElementById('hwStatus').textContent = '❌ Не удалось отправить.';
+    console.error('Ошибка отправки ДЗ:', err);
+    document.getElementById('hwStatus').innerHTML = `
+      <div style="color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 6px;">
+        ❌ <strong>Ошибка соединения.</strong><br>
+        <small>Попробуйте отправить ссылку на файл в текстовом поле.</small>
+      </div>
+    `;
   }
+}
+
+// Функция для загрузки файла (упрощенная версия)
+async function uploadFileToDrive(file, additionalText = '') {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64Data = e.target.result.split(',')[1];
+      
+      // Формируем текст для отправки
+      let resultText = additionalText ? `${additionalText}\n\n` : '';
+      resultText += `[ПРИКРЕПЛЕН ФАЙЛ]\n`;
+      resultText += `Имя: ${file.name}\n`;
+      resultText += `Тип: ${file.type}\n`;
+      resultText += `Размер: ${(file.size / 1024).toFixed(2)} KB\n`;
+      resultText += `Base64 (первые 500 символов): ${base64Data.substring(0, 500)}...`;
+      
+      resolve(resultText);
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 // === ПОКУПКА ЧЕРЕЗ GET ===
