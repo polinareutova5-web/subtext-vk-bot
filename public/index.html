@@ -32,6 +32,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+    nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap; /* ← запретить перенос */
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  overflow-x: auto; /* ← если не помещается — появится полоса прокрутки */
+}
     button:hover {
       background: #c8e6c9;
     }
@@ -60,7 +70,7 @@
   text-align: center;
   margin: 0;
   padding: 1rem;
-  background: url('https://yadi.sk/i/твой_ид_файла') no-repeat center center;
+  background: url('https://chat.qwen.ai/s/t_96fac5e2-2093-4416-a53e-7446a8918806?fev=0.1.34') no-repeat center center;
   background-size: cover;
   height: 200px;
   display: flex;
