@@ -40,10 +40,12 @@ async function loadData() {
     const lessonsList = document.getElementById('lessons-list');
     if (data.lessons.length > 0) {
       lessonsList.innerHTML = data.lessons.map(l => 
-        `<p><strong>Урок ${l.num}</strong><br>
-         <a href="${l.link}" target="_blank">Материалы</a>
-         ${l.hwLink ? ` | <a href="${l.hwLink}" target="_blank">ДЗ</a>` : ''}</p>`
-      ).join('');
+  `<div class="lesson-card">
+     <strong>Урок ${l.num}</strong><br>
+     <a href="${l.link}" target="_blank">Материалы</a>
+     ${l.hwLink ? `<br><a href="${l.hwLink}" target="_blank">ДЗ</a>` : ''}
+   </div>`
+).join('');
     } else {
       lessonsList.innerHTML = '<p>Нет доступных уроков. Обратитесь к преподавателю.</p>';
     }
