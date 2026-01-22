@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
   
-  <!-- Подключение шрифта (убраны лишние пробелы) -->
+  <!-- Подключение шрифта -->
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
   
   <style>
@@ -19,8 +19,8 @@
     }
     .hidden { display: none; }
 
-    /* Навигация — одна строка с прокруткой */
-    nav {
+    /* Навигация — идеальный блок */
+    .nav-container {
       display: flex;
       gap: 0.5rem;
       flex-wrap: nowrap;
@@ -30,10 +30,14 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    nav button {
-      margin: 0.5rem 0.25rem;
+    .nav-container button {
+      margin: 0;
       padding: 0.7rem 1.2rem;
       background: #e0f0e9;
       border: 1px solid #a8d8b9;
@@ -45,9 +49,14 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 50px; /* ← фиксированная высота */
     }
 
-    nav button:hover {
+    .nav-container button:hover {
       background: #c8e6c9;
     }
 
@@ -168,13 +177,13 @@
   <!-- Основной интерфейс -->
   <div id="main" class="hidden">
     <!-- Навигация -->
-    <nav>
+    <div class="nav-container">
       <button onclick="showSection('profile')">👤 Профиль</button>
       <button onclick="showSection('lessons')">📚 Уроки</button>
       <button onclick="showSection('homework')">📤 ДЗ</button>
       <button onclick="showSection('shop')">🛒 Магазин</button>
       <button onclick="showSection('schedule')">📅 Расписание</button>
-    </nav>
+    </div>
 
     <!-- Профиль -->
     <div id="profile" class="section">
