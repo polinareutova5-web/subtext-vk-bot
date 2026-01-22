@@ -4,178 +4,140 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
-  
-  <!-- Подключение шрифта -->
+
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
-  
+
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0;
-      background-color: #faf9f6;
-      color: #333;
-    }
-    .hidden { display: none; }
 
-    /* Навигация — идеальный блок */
-    .nav-container {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: nowrap;
-      margin: 1rem 0;
-      padding: 0.5rem 1rem;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      width: 100%;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+  /* === ГЛАВНЫЕ СТИЛИ === */
 
-    .nav-container button {
-      margin: 0;
-      padding: 0.7rem 1.2rem;
-      background: #e0f0e9;
-      border: 1px solid #a8d8b9;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      min-width: 120px;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      height: 50px; /* ← фиксированная высота */
-    }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #faf9f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
 
-    .nav-container button:hover {
-      background: #c8e6c9;
-    }
+  /* Контейнер для центрирования */
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
 
-    textarea {
-      width: 100%;
-      height: 6rem;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
+  /* Шапка */
+  header {
+    width: 100%;
+    height: 200px;
+    background: url("https://drive.google.com/uc?export=view&id=1KoYiVqvknD7xf-35aCpl0Fss3WYacJmz")
+                center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    input[type="file"] {
-      margin: 0.5rem 0;
-    }
+  header h1 {
+    font-family: 'English Script', cursive;
+    font-size: 3rem;
+    color: #013220;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    margin: 0;
+  }
 
-    /* Шапка с фоном */
-    h1 {
-      color: #013220;
-      text-align: center;
-      margin: 0;
-      padding: 1rem;
-      background: url('https://drive.google.com/file/d/1KoYiVqvknD7xf-35aCpl0Fss3WYacJmz/view?usp=drive_link') no-repeat center center;
-      background-size: cover;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'English Script', cursive;
-      font-size: 3rem;
-      font-weight: normal;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      letter-spacing: 1px;
-    }
+  /* Навигация */
+  .nav-container {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
 
-    .section {
-      animation: fadeIn 0.3s;
-      padding: 1rem;
-    }
+  .nav-container button {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.6rem 0;
+    background: #e0f0e9;
+    border: 1px solid #a8d8b9;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    height: 48px;
+  }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+  .nav-container button:hover {
+    background: #c8e6c9;
+  }
 
-    .lessons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
+  /* Общие секции */
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+  }
 
-    .lesson-card {
-      background: #f8f9fa;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+  .section.active {
+    display: block;
+  }
 
-    .shop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
-      margin-top: 1rem;
-    }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-    .shop-item {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-    }
+  /* Сетка уроков */
+  .lessons-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
 
-    .shop-item h3 {
-      margin: 0.5rem 0;
-      font-size: 1.1rem;
-      color: #333;
-    }
+  /* Магазин */
+  .shop-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
 
-    .shop-item .price {
-      font-weight: bold;
-      color: #e74c3c;
-      margin: 0.5rem 0;
-    }
+  .shop-item {
+    background: #fff;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  }
 
-    .buy-btn {
-      background: #2e7d32;
-      color: white;
-      border: none;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 0.5rem;
-    }
+  .shop-item .price {
+    font-weight: bold;
+    color: #e74c3c;
+  }
 
-    .buy-btn:hover {
-      background: #1b5e20;
-    }
+  .buy-btn {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
 
-    #loading {
-      text-align: center;
-      padding: 2rem;
-      font-size: 1.2rem;
-      color: #666;
-    }
+  .buy-btn:hover {
+    background: #1b5e20;
+  }
+
   </style>
 </head>
 <body>
+
   <!-- Шапка с картинкой -->
-  <h1>Subtext</h1>
+  <header>
+    <h1>Subtext</h1>
+  </header>
 
-  <div id="loading">Загрузка...</div>
+  <div class="page">
 
-  <!-- Основной интерфейс -->
-  <div id="main" class="hidden">
     <!-- Навигация -->
     <div class="nav-container">
       <button onclick="showSection('profile')">👤 Профиль</button>
@@ -185,46 +147,43 @@
       <button onclick="showSection('schedule')">📅 Расписание</button>
     </div>
 
-    <!-- Профиль -->
-    <div id="profile" class="section">
+    <!-- Секции -->
+    <div id="profile" class="section active">
       <h2>👤 Профиль</h2>
       <p>Привет, <strong id="username"></strong>!</p>
-      <p>Уровень: <span id="level"></span></p>
-      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
     </div>
 
-    <!-- Уроки -->
-    <div id="lessons" class="section hidden">
+    <div id="lessons" class="section">
       <h2>📚 Уроки</h2>
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
-    <!-- ДЗ -->
-    <div id="homework" class="section hidden">
+    <div id="homework" class="section">
       <h2>📤 Сдать ДЗ</h2>
-      <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
-      <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx">
-      <button onclick="submitHomework()">Отправить ДЗ</button>
-      <p id="hwStatus"></p>
+      <textarea placeholder="Ваш ответ..."></textarea>
+      <input type="file">
     </div>
 
-    <!-- Магазин -->
-    <div id="shop" class="section hidden">
+    <div id="shop" class="section">
       <h2>🛒 Магазин</h2>
-      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
-        💰 Ваши монеты: <span id="shop-coins">0</span>
-      </div>
       <div id="shop-items" class="shop-grid"></div>
     </div>
 
-    <!-- Расписание -->
-    <div id="schedule" class="section hidden">
+    <div id="schedule" class="section">
       <h2>📅 Расписание</h2>
-      <p>Ваше индивидуальное расписание пока не задано.</p>
-      <p>Свяжитесь с преподавателем для составления графика.</p>
+      <p>Пока пусто...</p>
     </div>
+
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => {
+        s.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+
 </body>
 </html>
