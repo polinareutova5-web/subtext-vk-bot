@@ -88,7 +88,6 @@ async function submitHomework() {
     return;
   }
 
-  // Кодируем текст для URL
   const encodedText = encodeURIComponent(text);
   const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
 
