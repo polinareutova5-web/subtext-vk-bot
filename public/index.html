@@ -9,94 +9,111 @@
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
   
   <style>
-  body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0;
-  background-color: #faf9f6;
-  color: #333;
-}
-
-
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #faf9f6;
+      color: #333;
+      overflow-x: hidden;
+    }
     .hidden { display: none; }
 
-  .nav-container {
-  display: flex;
-  gap: 0.5rem;
-
-  margin: 1rem auto;          /* строго по центру */
-  padding: 0.5rem;
-
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-
-  max-width: 800px;
-  width: 100%;
-
-  box-sizing: border-box;     /* КЛЮЧЕВОЕ */
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-
-    ..nav-container button {
-  flex: 0 0 140px;            /* все кнопки ОДИНАКОВЫЕ */
-
-  height: 50px;
-
-  padding: 0;
-  margin: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-
-  background: #e0f0e9;
-  border: 1px solid #a8d8b9;
-  border-radius: 8px;
-
-  cursor: pointer;
-  font-weight: 600;
-  text-align: center;
-
-  white-space: nowrap;
-}
-.nav-container button:hover {
-  background: #c8e6c9;
-}
-
-    textarea {
+    /* Шапка — вся страница */
+    .header {
+      height: 100vh;
       width: 100%;
-      height: 6rem;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    input[type="file"] {
-      margin: 0.5rem 0;
-    }
-
-    /* Шапка с фоном */
-    h1 {
-      color: #013220;
-      text-align: center;
-      margin: 0;
-      padding: 1rem;
       background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
       background-size: cover;
-      height: 200px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      position: relative;
+    }
+
+    .header h1 {
+      color: #013220;
       font-family: 'English Script', cursive;
       font-size: 3rem;
       font-weight: normal;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       letter-spacing: 1px;
+      margin: 0;
+      z-index: 2;
+    }
+
+    /* Навигация — кнопки под шапкой */
+    .nav-container {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: nowrap;
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      z-index: 2;
+    }
+
+    .nav-container button {
+      margin: 0;
+      padding: 0.8rem 1.4rem;
+      background: #e0f0e9;
+      border: 1px solid #a8d8b9;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      min-width: 140px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 55px;
+      font-size: 1rem;
+    }
+
+    .nav-container button:hover {
+      background: #c8e6c9;
+    }
+
+    /* Основной контент — профиль по центру */
+    .main-content {
+      padding: 2rem 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .profile-section h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.5rem;
+      color: #2e7d32;
+    }
+
+    .profile-section p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
     }
 
     .section {
@@ -176,14 +193,16 @@
   </style>
 </head>
 <body>
-  <!-- Шапка с картинкой -->
-  <h1>Subtext</h1>
+  <!-- Шапка — вся страница -->
+  <div class="header">
+    <h1>Subtext</h1>
+  </div>
 
   <div id="loading">Загрузка...</div>
 
   <!-- Основной интерфейс -->
   <div id="main" class="hidden">
-    <!-- Навигация -->
+    <!-- Навигация — кнопки под шапкой -->
     <div class="nav-container">
       <button onclick="showSection('profile')">👤 Профиль</button>
       <button onclick="showSection('lessons')">📚 Уроки</button>
@@ -192,8 +211,8 @@
       <button onclick="showSection('schedule')">📅 Расписание</button>
     </div>
 
-    <!-- Профиль -->
-    <div id="profile" class="section">
+    <!-- Профиль — строго по центру -->
+    <div id="profile" class="section profile-section">
       <h2>👤 Профиль</h2>
       <p>Привет, <strong id="username"></strong>!</p>
       <p>Уровень: <span id="level"></span></p>
