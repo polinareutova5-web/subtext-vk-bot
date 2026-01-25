@@ -5,72 +5,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
   
-  <!-- Подключение шрифта -->
-  <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap    " rel="stylesheet">
+  <!-- Подключение шрифта (убраны лишние пробелы) -->
+  <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
   
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
+      margin: 0;
       padding: 0;
       background-color: #faf9f6;
       color: #333;
     }
     .hidden { display: none; }
 
-    /* Шапка с картинкой - растягивается на весь экран */
-    .header-container {
-      width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9iZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0    ') no-repeat center center;
-      background-size: cover;
+    /* Шапка — картинка с пустым центром */
+    .header {
+      width: 100%;
       height: 200px;
-    }
-
-    h1 {
-      color: #013220;
-      text-align: center;
-      margin: 0 auto;
-      padding: 1rem;
-      height: 100%;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center top;
+      background-size: cover;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.9) 80%, rgba(255,255,255,0.9) 100%);
+      z-index: 1;
+    }
+
+    .header h1 {
+      color: #013220;
       font-family: 'English Script', cursive;
       font-size: 3rem;
       font-weight: normal;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       letter-spacing: 1px;
-      max-width: 800px;
+      margin: 0;
+      z-index: 2;
     }
 
-    /* Навигация — прилегает к краям центрального блока */
+    /* Навигация — только кнопки, без белого фона */
     .nav-container {
       display: flex;
       gap: 0.5rem;
       flex-wrap: nowrap;
-      margin: 1rem 0;
-      padding: 0.5rem 0;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin: 1rem auto;
+      padding: 0.5rem 1rem;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      width: 100%;
       max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
+      z-index: 2;
     }
 
     .nav-container button {
       margin: 0;
-      padding: 0.7rem 1.2rem;
+      padding: 0.8rem 1.4rem;
       background: #e0f0e9;
       border: 1px solid #a8d8b9;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      min-width: 120px;
+      min-width: 140px;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
@@ -79,21 +83,72 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      height: 50px;
-      flex: 1;
+      height: 55px;
+      font-size: 1rem;
     }
 
     .nav-container button:hover {
       background: #c8e6c9;
     }
 
+    /* Основной контент */
+    .main-content {
+      padding: 2rem 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Профиль — только в разделе "Профиль" */
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .profile-section h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.5rem;
+      color: #2e7d32;
+    }
+
+    .profile-section p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    /* Аватар */
+    .avatar-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .avatar-placeholder,
+    .avatar-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      border: 3px solid #2e7d32;
+    }
+
+    .avatar-placeholder {
+      background: #e0f0e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: #4CAF50;
+    }
+
     .section {
       animation: fadeIn 0.3s;
       padding: 1rem;
-      background: white;
-      border-radius: 8px;
-      margin: 1rem 0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     @keyframes fadeIn {
@@ -166,193 +221,39 @@
       color: #666;
     }
 
-    /* Контейнер для основного контента */
-    .content-wrapper {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0;
+    /* Стили для формы ДЗ */
+    .form-group {
+      margin: 1rem 0;
     }
 
-    /* Стили для формы */
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    
     .form-label {
       display: block;
       margin-bottom: 0.5rem;
       font-weight: 600;
-      color: #333;
     }
-    
-    .form-input {
+
+    textarea, input[type="file"] {
       width: 100%;
-      padding: 0.8rem;
-      border: 1px solid #ddd;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 1rem;
-      font-family: inherit;
     }
-    
-    .form-input:focus {
-      outline: none;
-      border-color: #4CAF50;
-      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-    }
-    
-    .file-upload-area {
-      border: 2px dashed #4CAF50;
-      border-radius: 8px;
-      padding: 2rem;
-      text-align: center;
-      background: #f9f9f9;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    
-    .file-upload-area:hover {
-      background-color: #f0f9f0;
-    }
-    
-    .file-upload-icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      color: #4CAF50;
-    }
-    
-    .required::after {
-      content: " *";
-      color: #e74c3c;
-    }
-    
-    .form-footer {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    
-    .btn {
-      padding: 0.8rem 1.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      border: none;
-      font-family: inherit;
-      font-size: 1rem;
-    }
-    
-    .btn-primary {
+
+    button[type="button"] {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
       background: #2e7d32;
       color: white;
-      flex: 2;
-    }
-    
-    .btn-primary:hover {
-      background: #1b5e20;
-    }
-    
-    .btn-secondary {
-      background: #f5f5f5;
-      color: #333;
-      border: 1px solid #ddd;
-      flex: 1;
-    }
-    
-    .btn-secondary:hover {
-      background: #e8e8e8;
-    }
-    
-    .info-box {
-      background: #f0f8ff;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1.5rem;
-      border-left: 4px solid #2196F3;
-    }
-    
-    .status-message {
-      margin-top: 1.5rem;
-      padding: 1rem;
+      border: none;
       border-radius: 6px;
-    }
-    
-    .status-success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-    
-    .status-error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-    
-    .status-loading {
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeaa7;
-    }
-    
-    /* Стили для аватара */
-    .avatar-container {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .avatar-img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #2e7d32;
       cursor: pointer;
-      transition: transform 0.3s;
-    }
-    
-    .avatar-img:hover {
-      transform: scale(1.05);
-    }
-    
-    .avatar-placeholder {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: #e0f0e9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      border: 4px solid #a8d8b9;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    
-    .avatar-placeholder:hover {
-      background: #c8e6c9;
-    }
-    
-    .avatar-placeholder-icon {
-      font-size: 3rem;
-      color: #4CAF50;
-    }
-    
-    .avatar-upload-link {
-      display: inline-block;
-      margin-top: 10px;
-      color: #2e7d32;
-      text-decoration: none;
       font-weight: 600;
-    }
-    
-    .avatar-upload-link:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <!-- Шапка с картинкой на весь экран -->
-  <div class="header-container">
+  <!-- Шапка — картинка с пустым центром -->
+  <div class="header">
     <h1>Subtext</h1>
   </div>
 
@@ -360,163 +261,83 @@
 
   <!-- Основной интерфейс -->
   <div id="main" class="hidden">
-    <!-- Контейнер для центрального контента -->
-    <div class="content-wrapper">
-      <!-- Навигация -->
-      <div class="nav-container">
-        <button onclick="showSection('profile')">👤 Профиль</button>
-        <button onclick="showSection('lessons')">📚 Уроки</button>
-        <button onclick="showSection('homework')">📤 ДЗ</button>
-        <button onclick="showSection('shop')">🛒 Магазин</button>
-        <button onclick="showSection('schedule')">📅 Расписание</button>
-      </div>
+    <!-- Навигация -->
+    <div class="nav-container">
+      <button onclick="showSection('profile')">👤 Профиль</button>
+      <button onclick="showSection('lessons')">📚 Уроки</button>
+      <button onclick="showSection('homework')">📤 ДЗ</button>
+      <button onclick="showSection('shop')">🛒 Магазин</button>
+      <button onclick="showSection('schedule')">📅 Расписание</button>
+    </div>
 
-      <!-- Профиль с аватаркой -->
-      <div id="profile" class="section">
-        <h2>👤 Профиль</h2>
-        
-        <!-- Контейнер для аватара -->
-        <div id="avatar-container" class="avatar-container">
-          <!-- Аватар будет загружен через JavaScript -->
-        </div>
-        
-        <!-- Информация профиля -->
-        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
-          <p>Привет, <strong id="username"></strong>!</p>
-          <p>Уровень: <span id="level"></span></p>
-          <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
-        </div>
-        
-        <!-- Статистика -->
-        <div style="margin-top: 1.5rem; padding: 1rem; background: #f0f8ff; border-radius: 8px; border-left: 4px solid #2196F3;">
-          <h3 style="margin-top: 0; color: #2c3e50;">📊 Ваша статистика</h3>
-          <p>Пройдено уроков: <span id="lessons-count">0</span></p>
-          <p>Сдано ДЗ: <span id="homework-count">0</span></p>
-          <p>Куплено материалов: <span id="purchases-count">0</span></p>
-        </div>
+    <!-- Профиль с аватаром -->
+    <div id="profile" class="section profile-section">
+      <h2>👤 Профиль</h2>
+      
+      <!-- Аватар -->
+      <div class="avatar-container" onclick="document.getElementById('avatar-upload').click()">
+        <img id="avatar-img" class="avatar-placeholder" src="" alt="Аватар">
       </div>
+      <input type="file" id="avatar-upload" accept="image/*" style="display: none;" onchange="uploadAvatar(this.files[0])">
+      
+      <p>Привет, <strong id="username"></strong>!</p>
+      <p>Уровень: <span id="level"></span></p>
+      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+    </div>
 
-      <!-- Уроки -->
-      <div id="lessons" class="section hidden">
-        <h2>📚 Уроки</h2>
-        <div id="lessons-list" class="lessons-grid"></div>
-      </div>
+    <!-- Уроки -->
+    <div id="lessons" class="section hidden">
+      <h2>📚 Уроки</h2>
+      <div id="lessons-list" class="lessons-grid"></div>
+    </div>
 
-      <!-- ДЗ с фото -->
-      <div id="homework" class="section hidden">
-        <h2>📸 Сдать домашнее задание</h2>
-        
-        <div class="info-box" style="margin-bottom: 1.5rem;">
-          <p style="margin: 0; color: #2c3e50; font-weight: 600;">📌 Как это работает:</p>
-          <ol style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
-            <li>Вы загружаете фото задания</li>
-            <li>Система автоматически сохраняет его в Google Drive</li>
-            <li>Ссылка на файл появляется в таблице преподавателя</li>
-            <li>Фото доступно в оригинальном качестве</li>
-          </ol>
-        </div>
-        
-        <form id="custom-homework-form" onsubmit="return false;">
-          <div class="form-group">
-            <label class="form-label required">👤 Имя ученика</label>
-            <input type="text" 
-                   id="student-name" 
-                   class="form-input"
-                   placeholder="Введите ваше имя" 
-                   required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label required">📧 Email (для обратной связи)</label>
-            <input type="email" 
-                   id="student-email" 
-                   class="form-input"
-                   placeholder="example@gmail.com" 
-                   required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label required">🔢 ID ученика</label>
-            <input type="text" 
-                   id="student-id" 
-                   class="form-input"
-                   readonly
-                   required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label required">📷 Фото задания</label>
-            <div class="file-upload-area" onclick="document.getElementById('homework-file').click()">
-              <div class="file-upload-icon">📸</div>
-              <p style="margin: 0.5rem 0; font-weight: 600;">Нажмите для выбора фото</p>
-              <p style="color: #666; margin-bottom: 1rem;">JPG, PNG, GIF (до 10 MB)</p>
-              <input type="file" 
-                     id="homework-file" 
-                     accept="image/*"
-                     style="display: none;"
-                     required>
-              <p id="file-name" style="margin-top: 1rem; color: #666; font-size: 0.9rem;"></p>
-            </div>
-            <small style="color: #666; display: block; margin-top: 0.5rem;">
-              📱 Можно сфотографировать задание телефоном
-            </small>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">💬 Комментарий к заданию (необязательно)</label>
-            <textarea id="homework-comment" 
-                      class="form-input"
-                      placeholder="Дополнительные комментарии, вопросы к преподавателю..."
-                      rows="4"></textarea>
-          </div>
-          
-          <div class="form-footer">
-            <button type="button" 
-                    class="btn btn-secondary"
-                    onclick="showSection('profile')">
-              ← Назад
-            </button>
-            <button type="button" 
-                    class="btn btn-primary"
-                    onclick="submitHomeworkWithPhoto()">
-              📸 Отправить фото
-            </button>
-          </div>
-        </form>
-        
-        <div id="form-status" style="margin-top: 1.5rem;"></div>
-        
-        <div class="info-box">
-          <p style="margin: 0; color: #2c3e50; font-weight: 600;">💡 Что происходит с фото:</p>
-          <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
-            <li>Фото сохраняется в Google Drive в вашей папке</li>
-            <li>В таблице "ДЗ" появляется кликабельная ссылка</li>
-            <li>Преподаватель видит фото в оригинальном качестве</li>
-            <li>Вы можете проверить, что фото загружено корректно</li>
-          </ul>
-        </div>
+    <!-- ДЗ -->
+    <div id="homework" class="section hidden">
+      <h2>📤 Сдать ДЗ</h2>
+      <div class="form-group">
+        <label class="form-label">Текст (если нужно)</label>
+        <textarea id="hwText" placeholder="Ваш ответ..."></textarea>
       </div>
+      <div class="form-group">
+        <label class="form-label">Фото задания</label>
+        <input type="file" id="hwFile" accept="image/*">
+      </div>
+      <button type="button" onclick="submitHomework()">Отправить ДЗ</button>
+      <p id="hwStatus"></p>
+    </div>
 
-      <!-- Магазин -->
-      <div id="shop" class="section hidden">
-        <h2>🛒 Магазин</h2>
-        <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
-          💰 Ваши монеты: <span id="shop-coins">0</span>
-        </div>
-        <div id="shop-items" class="shop-grid"></div>
+    <!-- Магазин -->
+    <div id="shop" class="section hidden">
+      <h2>🛒 Магазин</h2>
+      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
+        💰 Ваши монеты: <span id="shop-coins">0</span>
       </div>
+      <div id="shop-items" class="shop-grid"></div>
+    </div>
 
-      <!-- Расписание -->
-      <div id="schedule" class="section hidden">
-        <h2>📅 Расписание</h2>
-        <p>Ваше индивидуальное расписание пока не задано.</p>
-        <p>Свяжитесь с преподавателем для составления графика.</p>
-      </div>
+    <!-- Расписание -->
+    <div id="schedule" class="section hidden">
+      <h2>📅 Расписание</h2>
+      <p>Ваше индивидуальное расписание пока не задано.</p>
+      <p>Свяжитесь с преподавателем для составления графика.</p>
     </div>
   </div>
 
-  <!-- Модальное окно для аватара (будет добавлено через JS) -->
-  
   <script src="script.js"></script>
+
+  <script>
+    // Обновление аватара при загрузке
+    function updateAvatarPreview(url) {
+      const img = document.getElementById('avatar-img');
+      if (url) {
+        img.src = url;
+        img.classList.remove('avatar-placeholder');
+      } else {
+        img.src = '';
+        img.classList.add('avatar-placeholder');
+        img.alt = 'Аватар';
+      }
+    }
+  </script>
 </body>
 </html>
