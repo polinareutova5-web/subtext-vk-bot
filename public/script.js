@@ -59,29 +59,28 @@ async function loadData() {
     }
 
     // Магазин
-    const shopItems = document.getElementById('shop-items');
-    document.getElementById('shop-coins').textContent = u.coins;
+    // Магазин
+const shopItems = document.getElementById('shop-items');
+document.getElementById('shop-coins').textContent = u.coins;
 
-    if (data.shop.length > 0) {
-      shopItems.innerHTML = data.shop.map((item, idx) =>
-        `<div class="shop-item">
-           <h3>${item.name}</h3>
-           <div class="price">${item.price} монет</div>
-           <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name.replace(/'/g, "\\'")}\`, ${item.price})">Купить</button>
-         </div>`
-      ).join('');
-    } else {
-      shopItems.innerHTML = '<p>Магазин пуст.</p>';
-    }
-
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('main').classList.remove('hidden');
-    showSection('profile');
-
-  } catch (err) {
-    console.error('Ошибка загрузки:', err);
-    document.getElementById('loading').textContent = '❌ Не удалось загрузить данные.';
-  }
+if (data.shop.length > 0) {
+  shopItems.innerHTML = data.shop.map((item, idx) => `
+    <div class="shop-item">
+      ${item.image ? `
+        <div style="height: 150px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; overflow: hidden; border-radius: 8px;">
+          <img src="${item.image}" 
+               alt="${item.name}" 
+               style="max-width: 100%; max-height: 100%; object-fit: contain;"
+               onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div style=\'color:#666;font-size:0.9rem\'>Нет изображения</div>'">
+        </div>
+      ` : ''}
+      <h3>${item.name}</h3>
+      <div class="price">${item.price} монет</div>
+      <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name.replace(/'/g, "\\'")}\`, ${item.price})">Купить</button>
+    </div>
+  `).join('');
+} else {
+  shopItems.innerHTML = '<p>Магазин пуст.</p>';
 }
 
 // === ЗАГРУЗКА АВАТАРА ===
