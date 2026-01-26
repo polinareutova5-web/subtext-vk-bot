@@ -35,11 +35,15 @@ async function loadData() {
       return;
     }
 
-    const u = data.user;
-    document.getElementById('username').textContent = u.username || '—';
-    document.getElementById('level').textContent = u.level || '—';
-    document.getElementById('progress').textContent = u.progress || 0;
-    document.getElementById('coins').textContent = u.coins || 0;
+   // Загрузка данных — один раз при старте
+const u = data.user;
+document.getElementById('username').textContent = u.username || '—';
+document.getElementById('level').textContent = u.level || '—';
+document.getElementById('progress').textContent = u.progress || 0;
+document.getElementById('coins').textContent = u.coins || 0;
+
+// Баланс в магазине
+document.getElementById('shop-coins').textContent = u.coins;
 
     // Загружаем аватар из таблицы
     const avatarImg = document.getElementById('avatar-img');
