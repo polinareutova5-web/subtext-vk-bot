@@ -106,48 +106,51 @@ async function submitHomework() {
   const fileInput = document.getElementById('hwFile');
   const file = fileInput.files[0];
 
+  // Проверка формата файла (если есть)
   if (file) {
-    if (!file.type.startsWith('image/')) {
-      alert('Пожалуйста, выберите изображение.');
+    if (!file.type.match('image/jpeg|image/png|image/gif')) {
+      alert('Поддерживаются только JPG, PNG, GIF');
       return;
     }
-    
     if (file.size > 10 * 1024 * 1024) {
       alert('Файл слишком большой. Максимум 10 МБ.');
       return;
     }
+  }
 
-    try {
-      const base64 = await fileToBase64(file);
-      
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: "submit_homework_photo",
-          userId: userId,
-          userName: document.getElementById('username').textContent || '—',
-          userEmail: '',
-          fileName: file.name,
-          fileBase64: base64,
-          comment: text
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.success) {
-        document.getElementById('hwStatus').textContent = '✅ ДЗ с фото отправлено!';
-        document.getElementById('hwText').value = '';
-        fileInput.value = '';
-      } else {
-        document.getElementById('hwStatus').textContent = `❌ Ошибка: ${result.error || 'Неизвестная ошибка'}`;
-      }
-    } catch (err) {
-      console.error('Ошибка отправки ДЗ:', err);
-      document.getElementById('hwStatus').textContent = '❌ Не удалось отправить ДЗ.';
+  try {
+    let base64 = "";
+    if (file) {
+      base64 = await fileToBase64(file);
     }
-  } 
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: "submit_homework_photo",
+        userId: userId,
+        userName: document.getElementById('username').textContent || '—',
+        fileName: file ? file.name : "",
+        fileBase64: base64,
+        comment: text
+      })
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      document.getElementById('hwStatus').textContent = result.message;
+      document.getElementById('hwText').value = '';
+      fileInput.value = '';
+    } else {
+      document.getElementById('hwStatus').textContent = `❌ Ошибка: ${result.error || 'Неизвестная ошибка'}`;
+    }
+  } catch (err) {
+    console.error('Ошибка отправки ДЗ:', err);
+    document.getElementById('hwStatus').textContent = '❌ Не удалось отправить ДЗ.';
+  }
+}
   else if (text) {
     const encodedText = encodeURIComponent(text);
     const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
