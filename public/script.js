@@ -102,29 +102,54 @@ async function loadData() {
 // === ОТПРАВКА ДЗ ===
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
-  
-  if (!text) {
-    alert('Введите текст задания.');
+  const fileInput = document.getElementById('hwImage');
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Добавьте изображение");
     return;
   }
 
-  try {
-    const encodedText = encodeURIComponent(text);
-    const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
+  const reader = new FileReader();
 
-    const res = await fetch(url);
-    const data = await res.json();
-    
-    if (data.success) {
-      document.getElementById('hwStatus').textContent = '✅ ДЗ отправлено!';
-      document.getElementById('hwText').value = '';
-    } else {
-      document.getElementById('hwStatus').textContent = `❌ Ошибка: ${data.error}`;
+  reader.onload = async function () {
+    const base64 = reader.result.split(',')[1];
+
+    const payload = {
+      action: "submit_homework",
+      userId: userId,
+      username: username,
+      lessonNum: 0,
+      text: text,
+      fileName: file.name,
+      fileBase64: base64
+    };
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('hwStatus').textContent = "✅ ДЗ отправлено!";
+        fileInput.value = "";
+        document.getElementById('hwText').value = "";
+      } else {
+        document.getElementById('hwStatus').textContent = "❌ " + data.error;
+      }
+
+    } catch (e) {
+      console.error(e);
+      document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
     }
-  } catch (err) {
-    console.error('Ошибка ДЗ:', err);
-    document.getElementById('hwStatus').textContent = '❌ Не удалось отправить.';
-  }
+  };
+
+  reader.readAsDataURL(file);
+}
+
 }// === ПОКУПКА ЧЕРЕЗ GET ===
 async function buyItem(index) {
   const url = `${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`;
