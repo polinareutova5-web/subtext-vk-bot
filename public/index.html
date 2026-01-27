@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
+  <!-- Шрифт для названия -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -21,11 +20,11 @@
 
     .hidden { display: none; }
 
-    /* ===== HERO / HEADER ===== */
+    /* ===== HEADER ===== */
     .header {
       width: 100vw;
-      height: 260px;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0')
+      height: 280px;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png')
         no-repeat center center;
       background-size: cover;
       display: flex;
@@ -41,31 +40,32 @@
       background: linear-gradient(
         to bottom,
         rgba(255,255,255,0.85),
-        rgba(255,255,255,0.2),
+        rgba(255,255,255,0.25),
         rgba(255,255,255,0.85)
       );
     }
 
     .header h1 {
-      font-family: 'English Script', cursive;
-      font-size: 3.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      letter-spacing: 1px;
       color: #013220;
       z-index: 1;
-      padding: .5rem 1.5rem;
-      border-radius: 12px;
-      backdrop-filter: blur(4px);
-      text-shadow: 0 2px 8px rgba(0,0,0,.15);
+      padding: .6rem 2rem;
+      border-radius: 16px;
+      backdrop-filter: blur(6px);
+      text-shadow: 0 4px 12px rgba(0,0,0,.2);
     }
 
-    /* ===== NAV BUTTONS ===== */
+    /* ===== NAV ===== */
     .nav-container {
       display: flex;
       gap: .8rem;
-      overflow-x: auto;
       max-width: 900px;
       margin: 1.5rem auto;
       padding: .5rem 1rem;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     .nav-container button {
@@ -76,7 +76,6 @@
       background: linear-gradient(135deg, #2e7d32, #66bb6a);
       color: #fff;
       font-weight: 600;
-      font-size: .95rem;
       cursor: pointer;
       box-shadow: 0 6px 14px rgba(46,125,50,.25);
       transition: all .25s ease;
@@ -85,7 +84,6 @@
     .nav-container button:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(46,125,50,.35);
-      filter: brightness(1.05);
     }
 
     /* ===== SECTIONS ===== */
@@ -106,7 +104,7 @@
       text-align: center;
       background: #fff;
       padding: 2rem;
-      border-radius: 16px;
+      border-radius: 18px;
       box-shadow: 0 10px 30px rgba(0,0,0,.08);
     }
 
@@ -119,7 +117,7 @@
       margin-bottom: 1rem;
     }
 
-    /* ===== CARDS ===== */
+    /* ===== GLASS CARDS ===== */
     .lessons-grid,
     .shop-grid {
       display: grid;
@@ -129,18 +127,38 @@
 
     .lesson-card,
     .shop-item {
-      background: #fff;
-      padding: 1.2rem;
-      border-radius: 14px;
-      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 1.4rem;
       text-align: center;
-      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+      transition: all .25s ease;
     }
 
     .lesson-card:hover,
     .shop-item:hover {
       transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(0,0,0,.12);
+      box-shadow: 0 14px 30px rgba(0,0,0,.15);
+    }
+
+    /* ===== LESSON BUTTONS ===== */
+    .lesson-btn {
+      display: inline-block;
+      margin-top: .6rem;
+      padding: .6rem 1.4rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2e7d32, #43a047);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
+    }
+
+    .lesson-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
     }
 
     /* ===== BUTTONS ===== */
@@ -157,29 +175,20 @@
       transition: all .25s ease;
     }
 
-    button[type="button"]:hover,
+    button:hover,
     .buy-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(46,125,50,.35);
     }
 
-    /* ===== FORMS ===== */
     textarea, input[type="file"] {
       width: 100%;
       padding: .7rem;
       border-radius: 10px;
       border: 1px solid #ccc;
-      font-size: .95rem;
     }
 
-    .form-group {
-      margin: 1rem 0;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
+    h2 { text-align: center; }
   </style>
 </head>
 
@@ -202,7 +211,7 @@
     </div>
 
     <div id="profile" class="section profile-section">
-      <img id="avatar-img" class="avatar-img" alt="Аватар">
+      <img id="avatar-img" class="avatar-img">
       <p>Привет, <strong id="username"></strong>!</p>
       <p>Уровень: <span id="level"></span></p>
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
@@ -215,15 +224,8 @@
 
     <div id="homework" class="section hidden">
       <h2>📤 Сдать ДЗ</h2>
-
-      <div class="form-group">
-        <textarea id="hwText" placeholder="Комментарий к ДЗ..." rows="4"></textarea>
-      </div>
-
-      <div class="form-group">
-        <input type="file" id="hwImage" accept="image/*">
-      </div>
-
+      <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
+      <input type="file" id="hwImage"><br><br>
       <button type="button" onclick="submitHomework()">Отправить ДЗ</button>
       <p id="hwStatus"></p>
     </div>
@@ -231,14 +233,14 @@
     <div id="shop" class="section hidden">
       <h2>🛒 Магазин</h2>
       <p style="text-align:center;font-weight:bold">
-        💰 Ваши монеты: <span id="shop-coins">0</span>
+        💰 Монеты: <span id="shop-coins">0</span>
       </p>
       <div id="shop-items" class="shop-grid"></div>
     </div>
 
     <div id="schedule" class="section hidden">
       <h2>📅 Расписание</h2>
-      <p>Ваше индивидуальное расписание пока не задано.</p>
+      <p>Индивидуальное расписание пока не задано.</p>
     </div>
 
   </div>
