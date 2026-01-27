@@ -2,6 +2,9 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbwLkoVbQp-KN7FpnKswxtEgfIvAjsnaP9EHTwmEgEcs3LcsasxxgfR2jXZBe5bE2Nkx/exec";
 
 let userId;
+let username = "";
+
+// ==================== UI ====================
 
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
@@ -11,16 +14,17 @@ function showSection(sectionId) {
 }
 
 function confirmBuy(index, name, price) {
-  const confirmed = confirm(`Хотите купить?\n\n${name}\nЦена: ${price} монет`);
-  if (confirmed) {
+  if (confirm(`Хотите купить?\n\n${name}\nЦена: ${price} монет`)) {
     buyItem(index);
   }
 }
 
+// ==================== ЗАГРУЗКА ДАННЫХ ====================
+
 async function loadData() {
   const urlParams = new URLSearchParams(window.location.search);
   userId = urlParams.get('id');
-  
+
   if (!userId) {
     document.getElementById('loading').textContent = '❌ Не указан ID ученика';
     return;
@@ -36,70 +40,61 @@ async function loadData() {
     }
 
     const u = data.user;
+    username = u.username || "";
+
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
 
-    // Загружаем аватар из таблицы
     const avatarImg = document.getElementById('avatar-img');
     if (avatarImg) {
-      if (u.avatarUrl) {
-        avatarImg.src = u.avatarUrl;
-      } else {
-        avatarImg.src = "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
-      }
+      avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
     }
 
     // Уроки
     const lessonsList = document.getElementById('lessons-list');
-    if (data.lessons.length > 0) {
-      lessonsList.innerHTML = data.lessons.map(l => 
-        `<div class="lesson-card">
-           <strong>Урок ${l.num}</strong><br>
-           <a href="${l.link}" target="_blank">Материалы</a>
-           ${l.hwLink ? `<br><a href="${l.hwLink}" target="_blank">ДЗ</a>` : ''}
-         </div>`
-      ).join('');
-    } else {
-      lessonsList.innerHTML = '<p>Нет доступных уроков.</p>';
-    }
+    lessonsList.innerHTML = data.lessons.length
+      ? data.lessons.map(l => `
+        <div class="lesson-card">
+          <strong>Урок ${l.num}</strong><br>
+          <a href="${l.link}" target="_blank">Материалы</a>
+          ${l.hwLink ? `<br><a href="${l.hwLink}" target="_blank">ДЗ</a>` : ''}
+        </div>
+      `).join('')
+      : '<p>Нет доступных уроков.</p>';
 
     // Магазин
     const shopItems = document.getElementById('shop-items');
     document.getElementById('shop-coins').textContent = u.coins;
 
-    if (data.shop.length > 0) {
-      shopItems.innerHTML = data.shop.map((item, idx) => `
+    shopItems.innerHTML = data.shop.length
+      ? data.shop.map((item, idx) => `
         <div class="shop-item">
           ${item.image ? `
-            <div style="height: 150px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; overflow: hidden; border-radius: 8px;">
-              <img src="${item.image}" 
-                   alt="${item.name}" 
-                   style="max-width: 100%; max-height: 100%; object-fit: contain;"
-                   onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div style=\'color:#666;font-size:0.9rem\'>Нет изображения</div>'">
-            </div>
-          ` : ''}
+            <div style="height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem">
+              <img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain">
+            </div>` : ''
+          }
           <h3>${item.name}</h3>
           <div class="price">${item.price} монет</div>
-          <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name.replace(/'/g, "\\'")}\`, ${item.price})">Купить</button>
+          <button onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
         </div>
-      `).join('');
-    } else {
-      shopItems.innerHTML = '<p>Магазин пуст.</p>';
-    }
+      `).join('')
+      : '<p>Магазин пуст.</p>';
 
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('main').classList.remove('hidden');
     showSection('profile');
 
   } catch (err) {
-    console.error('Ошибка загрузки:', err);
+    console.error(err);
     document.getElementById('loading').textContent = '❌ Не удалось загрузить данные.';
   }
 }
 
-// === ОТПРАВКА ДЗ ===
+// ==================== ОТПРАВКА ДЗ ====================
+
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
   const fileInput = document.getElementById('hwImage');
@@ -112,15 +107,15 @@ async function submitHomework() {
 
   const reader = new FileReader();
 
-  reader.onload = async function () {
+  reader.onload = async () => {
     const base64 = reader.result.split(',')[1];
 
     const payload = {
       action: "submit_homework",
-      userId: userId,
-      username: username,
+      userId,
+      username,
       lessonNum: 0,
-      text: text,
+      text,
       fileName: file.name,
       fileBase64: base64
     };
@@ -128,17 +123,18 @@ async function submitHomework() {
     try {
       const res = await fetch(API_URL, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
 
       const data = await res.json();
 
+      document.getElementById('hwStatus').textContent =
+        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
+
       if (data.success) {
-        document.getElementById('hwStatus').textContent = "✅ ДЗ отправлено!";
         fileInput.value = "";
         document.getElementById('hwText').value = "";
-      } else {
-        document.getElementById('hwStatus').textContent = "❌ " + data.error;
       }
 
     } catch (e) {
@@ -150,36 +146,23 @@ async function submitHomework() {
   reader.readAsDataURL(file);
 }
 
-}// === ПОКУПКА ЧЕРЕЗ GET ===
-async function buyItem(index) {
-  const url = `${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`;
+// ==================== ПОКУПКА ====================
 
+async function buyItem(index) {
   try {
-    const res = await fetch(url);
+    const res = await fetch(`${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`);
     const data = await res.json();
-    
+
     if (data.success) {
-      alert('✅ Куплено!');
+      alert("✅ Куплено!");
       location.reload();
     } else {
-      alert(`❌ ${data.error || 'Не удалось совершить покупку'}`);
+      alert("❌ " + (data.error || "Ошибка покупки"));
     }
   } catch (err) {
-    console.error('Ошибка покупки:', err);
-    alert('❌ Ошибка соединения.');
+    alert("❌ Ошибка соединения");
   }
 }
 
-// === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
-}
-
-// Запуск
+// ==================== СТАРТ ====================
 loadData();
