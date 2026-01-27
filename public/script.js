@@ -35,15 +35,14 @@ async function loadData() {
       return;
     }
 
-   // Загрузка данных — один раз при старте
-const u = data.user;
-document.getElementById('username').textContent = u.username || '—';
-document.getElementById('level').textContent = u.level || '—';
-document.getElementById('progress').textContent = u.progress || 0;
-document.getElementById('coins').textContent = u.coins || 0;
+    const u = data.user;
+    document.getElementById('username').textContent = u.username || '—';
+    document.getElementById('level').textContent = u.level || '—';
+    document.getElementById('progress').textContent = u.progress || 0;
+    document.getElementById('coins').textContent = u.coins || 0;
 
-// Баланс в магазине
-document.getElementById('shop-coins').textContent = u.coins;
+    // Баланс в магазине
+    document.getElementById('shop-coins').textContent = u.coins;
 
     // Загружаем аватар из таблицы
     const avatarImg = document.getElementById('avatar-img');
@@ -71,8 +70,6 @@ document.getElementById('shop-coins').textContent = u.coins;
 
     // Магазин
     const shopItems = document.getElementById('shop-items');
-    document.getElementById('shop-coins').textContent = u.coins;
-
     if (data.shop.length > 0) {
       shopItems.innerHTML = data.shop.map((item, idx) => `
         <div class="shop-item">
