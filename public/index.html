@@ -5,26 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
 
-<!-- Шрифты -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <!-- Шрифт для названия -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
-<style>
-* { box-sizing: border-box; }
+  <style>
+    * { box-sizing: border-box; }
 
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: #faf9f6;
-  color: #1f2933;
-}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #faf9f6;
+      color: #333;
+    }
 
-.hidden { display: none; }
+    .hidden { display: none; }
 
-* ===== HEADER ===== */
+    /* ===== HEADER ===== */
     .header {
       width: 100vw;
       height: 280px;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0')
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png')
         no-repeat center center;
       background-size: cover;
       display: flex;
@@ -56,220 +56,221 @@ body {
       backdrop-filter: blur(6px);
       text-shadow: 0 4px 12px rgba(0,0,0,.2);
     }
-/* ===== NAV ===== */
-.nav-container {
-  display: flex;
-  gap: .6rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 1rem auto;
-  padding: .5rem;
-}
 
-.nav-container button {
-  min-width: 140px;
-  height: 52px;
-  border-radius: 999px;
-  border: none;
-  background: linear-gradient(135deg, #2e7d32, #66bb6a);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 10px 24px rgba(46,125,50,.35);
-  transition: all .25s ease;
-}
+    /* ===== NAV ===== */
+    .nav-container {
+      display: flex;
+      gap: .8rem;
+      max-width: 900px;
+      margin: 1.5rem auto;
+      padding: .5rem 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-.nav-container button:hover {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 16px 36px rgba(46,125,50,.45);
-}
+    .nav-container button {
+      min-width: 150px;
+      height: 55px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2e7d32, #66bb6a);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
+    }
 
-/* ===== SECTIONS ===== */
-.section {
-  padding: 1.5rem;
-  animation: fade .3s ease;
-}
+    .nav-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
+    }
 
-@keyframes fade {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 1.5rem;
+      animation: fadeIn .3s ease;
+    }
 
-/* ===== PROFILE ===== */
-.profile-section {
-  max-width: 520px;
-  margin: auto;
-  text-align: center;
-  background: white;
-  padding: 2rem;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.08);
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.avatar-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 4px solid #2e7d32;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
+    /* ===== PROFILE ===== */
+    .profile-section {
+      max-width: 520px;
+      margin: auto;
+      text-align: center;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
 
-/* ===== LESSONS ===== */
-.lessons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.2rem;
-}
+    .avatar-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2e7d32;
+      margin-bottom: 1rem;
+    }
 
-.lesson-card {
-  background: white;
-  padding: 1.4rem;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 26px rgba(0,0,0,.08);
-  transition: all .3s ease;
-}
+    /* ===== GRIDS ===== */
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
 
-.lesson-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.12);
-}
+    /* МАГАЗИН — СТРОГО 4 В ЛИНИЮ */
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
 
-/* === ОБЪЁМНЫЕ КНОПКИ УРОКОВ === */
-.lesson-btn {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: .7rem 1.8rem;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #2e7d32, #81c784);
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow:
-    0 6px 14px rgba(46,125,50,.35),
-    inset 0 1px 0 rgba(255,255,255,.4);
-  transition: all .25s ease;
-}
+    @media (max-width: 900px) {
+      .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
-.lesson-btn:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow:
-    0 10px 26px rgba(46,125,50,.45),
-    inset 0 1px 0 rgba(255,255,255,.5);
-}
+    @media (max-width: 500px) {
+      .shop-grid { grid-template-columns: 1fr; }
+    }
 
-/* ===== SHOP ===== */
-.shop-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem;
-}
+    .lesson-card,
+    .shop-item {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 1.4rem;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+      transition: all .25s ease;
+    }
 
-@media (max-width: 900px) {
-  .shop-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 500px) {
-  .shop-grid { grid-template-columns: 1fr; }
-}
+    .lesson-card:hover,
+    .shop-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(0,0,0,.15);
+    }
 
-.shop-item {
-  background: white;
-  padding: 1.4rem;
-  border-radius: 18px;
-  text-align: center;
-  box-shadow: 0 10px 26px rgba(0,0,0,.08);
-  transition: all .3s ease;
-}
+    /* ===== ОБЪЕМНЫЕ КНОПКИ УРОКОВ ===== */
+    .lesson-btn {
+      display: inline-block;
+      margin-top: .8rem;
+      padding: .7rem 1.6rem;
+      border-radius: 999px;
+      background:
+        linear-gradient(to bottom, #66bb6a, #2e7d32);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow:
+        0 6px 0 #1b5e20,
+        0 10px 18px rgba(0,0,0,.25);
+      transition: all .2s ease;
+    }
 
-.shop-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.12);
-}
+    .lesson-btn:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 8px 0 #1b5e20,
+        0 14px 24px rgba(0,0,0,.3);
+    }
 
-.buy-btn,
-button[type="button"] {
-  margin-top: .8rem;
-  padding: .7rem 1.8rem;
-  border-radius: 999px;
-  border: none;
-  background: linear-gradient(135deg, #2e7d32, #66bb6a);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 10px 24px rgba(46,125,50,.35);
-  transition: all .25s ease;
-}
+    .lesson-btn:active {
+      transform: translateY(4px);
+      box-shadow:
+        0 2px 0 #1b5e20,
+        0 6px 12px rgba(0,0,0,.25);
+    }
 
-.buy-btn:hover,
-button:hover {
-  transform: translateY(-2px) scale(1.05);
-}
+    /* ===== OTHER BUTTONS ===== */
+    button[type="button"],
+    .buy-btn {
+      background: linear-gradient(135deg, #2e7d32, #43a047);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: .7rem 1.6rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
+    }
 
-textarea, input[type="file"] {
-  width: 100%;
-  padding: .6rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
+    button:hover,
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
+    }
 
-h2 { text-align: center; }
-</style>
+    textarea, input[type="file"] {
+      width: 100%;
+      padding: .7rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    h2 { text-align: center; }
+  </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h1>Subtext</h1>
-</div>
-
-<div id="loading">Загрузка...</div>
-
-<div id="main" class="hidden">
-
-  <div class="nav-container">
-    <button onclick="showSection('profile')">Профиль</button>
-    <button onclick="showSection('lessons')">Уроки</button>
-    <button onclick="showSection('homework')">ДЗ</button>
-    <button onclick="showSection('shop')">Магазин</button>
-    <button onclick="showSection('schedule')">Расписание</button>
+  <div class="header">
+    <h1>Subtext</h1>
   </div>
 
-  <div id="profile" class="section profile-section">
-    <img id="avatar-img" class="avatar-img">
-    <p>Привет, <strong id="username"></strong>!</p>
-    <p>Уровень: <span id="level"></span></p>
-    <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+  <div id="loading">Загрузка...</div>
+
+  <div id="main" class="hidden">
+
+    <div class="nav-container">
+      <button onclick="showSection('profile')">👤 Профиль</button>
+      <button onclick="showSection('lessons')">📚 Уроки</button>
+      <button onclick="showSection('homework')">📤 ДЗ</button>
+      <button onclick="showSection('shop')">🛒 Магазин</button>
+      <button onclick="showSection('schedule')">📅 Расписание</button>
+    </div>
+
+    <div id="profile" class="section profile-section">
+      <img id="avatar-img" class="avatar-img">
+      <p>Привет, <strong id="username"></strong>!</p>
+      <p>Уровень: <span id="level"></span></p>
+      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+    </div>
+
+    <div id="lessons" class="section hidden">
+      <h2>📚 Уроки</h2>
+      <div id="lessons-list" class="lessons-grid"></div>
+    </div>
+
+    <div id="homework" class="section hidden">
+      <h2>📤 Сдать ДЗ</h2>
+      <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
+      <input type="file" id="hwImage"><br><br>
+      <button type="button" onclick="submitHomework()">Отправить ДЗ</button>
+      <p id="hwStatus"></p>
+    </div>
+
+    <div id="shop" class="section hidden">
+      <h2>🛒 Магазин</h2>
+      <p style="text-align:center;font-weight:bold">
+        💰 Монеты: <span id="shop-coins">0</span>
+      </p>
+      <div id="shop-items" class="shop-grid"></div>
+    </div>
+
+    <div id="schedule" class="section hidden">
+      <h2>📅 Расписание</h2>
+      <p>Индивидуальное расписание пока не задано.</p>
+    </div>
+
   </div>
 
-  <div id="lessons" class="section hidden">
-    <h2>Уроки</h2>
-    <div id="lessons-list" class="lessons-grid"></div>
-  </div>
-
-  <div id="homework" class="section hidden">
-    <h2>Сдать ДЗ</h2>
-    <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea>
-    <input type="file" id="hwImage">
-    <button type="button" onclick="submitHomework()">Отправить</button>
-    <p id="hwStatus"></p>
-  </div>
-
-  <div id="shop" class="section hidden">
-    <h2>Магазин</h2>
-    <p style="text-align:center;font-weight:600">
-      💰 Монеты: <span id="shop-coins">0</span>
-    </p>
-    <div id="shop-items" class="shop-grid"></div>
-  </div>
-
-  <div id="schedule" class="section hidden">
-    <h2>Расписание</h2>
-    <p>Ваше индивидуальное расписание пока не задано.</p>
-  </div>
-
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
