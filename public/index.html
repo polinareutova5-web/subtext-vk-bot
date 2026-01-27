@@ -276,16 +276,19 @@
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
-    <!-- ДЗ -->
+    
+<!-- ДЗ -->
 <div id="homework" class="section hidden">
   <h2>📤 Сдать ДЗ</h2>
-  <div class="form-group">
-    <label class="form-label">Ваш ответ</label>
-    <textarea id="hwText" placeholder="Напишите ваш ответ..." rows="6"></textarea>
-  </div>
-  <button type="button" onclick="submitHomework()">Отправить ДЗ</button>
+
+  <textarea id="hwText" placeholder="Комментарий к ДЗ..." rows="4"></textarea>
+
+  <input type="file" id="hwImage" accept="image/*" />
+
+  <button onclick="submitHomework()">Отправить ДЗ</button>
   <p id="hwStatus"></p>
 </div>
+
 
     <!-- Магазин (только монеты) -->
     <div id="shop" class="section hidden">
