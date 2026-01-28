@@ -1,133 +1,263 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
 
+  <!-- Шрифты -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #e8f5e9, #faf9f6);
+      margin: 0;
+      background-color: #faf9f6;
       color: #333;
     }
 
     .hidden { display: none; }
 
-    /* ===== START PAGE ===== */
-    .start-page {
-      min-height: 100vh;
+    /* ===== HEADER ===== */
+    .header {
+      width: 100%;
+      height: 260px;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png')
+        no-repeat center center;
+      background-size: cover;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 2rem;
+      justify-content: center;
+      position: relative;
     }
 
-    .start-title {
+    .header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.85),
+        rgba(255,255,255,0.25),
+        rgba(255,255,255,0.85)
+      );
+    }
+
+    .big-title {
       font-family: 'Playfair Display', serif;
-      font-size: 4rem;
-      color: rgba(255,255,255,0.9);
+      font-size: 6rem;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 3px;
+      text-transform: uppercase;
       text-shadow:
         2px 2px 0 rgba(0,60,0,0.7),
-        0 8px 24px rgba(0,0,0,0.2);
-      margin-bottom: 1rem;
+        0 6px 16px rgba(0,0,0,0.2);
+      z-index: 1;
     }
 
-    .start-box {
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    /* ===== NAV ===== */
+    .nav-container {
+      display: flex;
+      gap: .8rem;
+      max-width: 900px;
+      margin: 1.5rem auto;
+      padding: .5rem 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
-    .start-box input {
-      width: 100%;
-      padding: .9rem;
-      border-radius: 999px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    .start-box button {
-      width: 100%;
-      padding: .9rem;
-      border-radius: 999px;
+    .nav-container button {
+      min-width: 150px;
+      height: 50px;
       border: none;
+      border-radius: 999px;
       background: linear-gradient(135deg, #2e7d32, #66bb6a);
       color: #fff;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(46,125,50,.35);
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: .25s ease;
     }
 
-    .start-error {
-      margin-top: 1rem;
-      color: #c62828;
-      font-weight: 500;
+    .nav-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
     }
 
-    /* ===== MAIN CABINET ===== */
-    #main { padding-bottom: 2rem; }
+    /* ===== SECTION TITLE ===== */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      text-align: center;
+      color: #2e7d32;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 12px rgba(46,125,50,.25);
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 1.5rem;
+      animation: fadeIn .3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== PROFILE ===== */
+    .profile-section {
+      max-width: 520px;
+      margin: auto;
+      text-align: center;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    .avatar-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2e7d32;
+      margin-bottom: 1rem;
+    }
+
+    /* ===== GRIDS ===== */
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+
+    /* ===== CARDS ===== */
+    .lesson-card,
+    .shop-item {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 1.4rem;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+      transition: .25s ease;
+    }
+
+    .lesson-card:hover,
+    .shop-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(0,0,0,.15);
+    }
+
+    /* ===== LESSON BUTTON ===== */
+    .lesson-btn {
+      display: inline-block;
+      margin-top: .8rem;
+      padding: .6rem 1.6rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2e7d32, #43a047);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+    }
+
+    /* ===== BUY BUTTON ===== */
+    .buy-btn {
+      margin-top: .8rem;
+      padding: .7rem 1.8rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1b5e20, #66bb6a);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(27,94,32,.35);
+      transition: .25s ease;
+    }
+
+    .buy-btn:hover {
+      transform: scale(1.05);
+    }
+
+    textarea, input[type="file"] {
+      width: 100%;
+      padding: .7rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+      .big-title { font-size: 3.5rem; }
+      .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
   </style>
 </head>
+
 <body>
 
-<!-- ===== START PAGE ===== -->
-<div id="start">
-  <h2>Введите свой ID</h2>
-  <input id="idInput" placeholder="Ваш ID">
-  <button onclick="enterById()">Войти</button>
-</div>
+  <div class="header">
+    <div class="big-title">Subtext</div>
+  </div>
 
-<div id="loading" class="hidden">Загрузка...</div>
-<div id="main" class="hidden">
-  <!-- здесь весь ЛК код -->
-</div>
+  <div id="loading">Загрузка...</div>
 
-  <!-- ТВОЙ ЛИЧНЫЙ КАБИНЕТ УЖЕ ЗДЕСЬ -->
-</div>
+  <div id="main" class="hidden">
 
-<script>
-const API_URL = "ТВОЙ_API_URL";
+    <div class="nav-container">
+      <button onclick="showSection('profile')">Профиль</button>
+      <button onclick="showSection('lessons')">Уроки</button>
+      <button onclick="showSection('homework')">ДЗ</button>
+      <button onclick="showSection('shop')">Магазин</button>
+      <button onclick="showSection('schedule')">Расписание</button>
+    </div>
 
-async function checkUser() {
-  const id = document.getElementById('idInput').value.trim();
-  const error = document.getElementById('startError');
+    <div id="profile" class="section profile-section">
+      <img id="avatar-img" class="avatar-img">
+      <p>Привет, <strong id="username"></strong>!</p>
+      <p>Уровень: <span id="level"></span></p>
+      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+    </div>
 
-  if (!id) {
-    error.textContent = "Введите ID";
-    return;
-  }
+    <div id="lessons" class="section hidden">
+      <div class="section-title">Уроки</div>
+      <div id="lessons-list" class="lessons-grid"></div>
+    </div>
 
-  try {
-    const res = await fetch(`${API_URL}?action=check_user&userId=${id}`);
-    const data = await res.json();
+    <div id="homework" class="section hidden">
+      <div class="section-title">Сдать домашнее задание</div>
+      <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
+      <input type="file" id="hwImage"><br><br>
+      <button class="buy-btn" onclick="submitHomework()">Отправить</button>
+      <p id="hwStatus"></p>
+    </div>
 
-    if (data.success) {
-      document.getElementById('startPage').classList.add('hidden');
-      document.getElementById('main').classList.remove('hidden');
-      window.history.replaceState(null, "", `?id=${id}`);
-      loadData(); // твоя функция загрузки профиля
-    } else {
-      error.textContent = "Вы не зарегистрированы";
-    }
-  } catch (e) {
-    error.textContent = "Ошибка соединения";
-  }
-}
-</script>
+    <div id="shop" class="section hidden">
+      <div class="section-title">Магазин</div>
+      <p style="text-align:center;font-weight:bold">
+        💰 Монеты: <span id="shop-coins">0</span>
+      </p>
+      <div id="shop-items" class="shop-grid"></div>
+    </div>
 
-<script src="script.js"></script>
+    <div id="schedule" class="section hidden">
+      <div class="section-title">Расписание</div>
+      <p style="text-align:center">Индивидуальное расписание пока не задано.</p>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
