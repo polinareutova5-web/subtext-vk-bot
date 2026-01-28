@@ -185,6 +185,25 @@
       .shop-grid { grid-template-columns: 1fr; }
       .section-title { font-size: 1.6rem; }
     }
+
+    .slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.slot-btn {
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #e8f5e9;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.slot-btn:hover {
+  background: #c8e6c9;
+}
   </style>
 </head>
 
@@ -246,6 +265,10 @@
     <p><strong>Расписание:</strong></p>
     <p id="lesson-schedule">—</p>
   </div>
+
+  <div id="slots" class="slots-grid"></div>
+
+  <div id="mySlot"></div>
 </div>
 
   <script src="script.js"></script>
