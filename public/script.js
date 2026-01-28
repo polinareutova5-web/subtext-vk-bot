@@ -17,27 +17,46 @@ function confirmBuy(index, name, price) {
 }
 
 // ================= LOAD DATA =================
-
 async function loadData() {
   const urlParams = new URLSearchParams(window.location.search);
   userId = urlParams.get('id');
 
+  // 👉 ЕСЛИ ID НЕТ — ПОКАЗЫВАЕМ СТАРТ
   if (!userId) {
-    document.getElementById('loading').textContent = '❌ Не указан ID ученика';
+    document.getElementById('loading').classList.add('hidden');
+    showSection('start'); // стартовая секция
     return;
   }
 
+  // 👉 ЕСЛИ ID ЕСТЬ — ПРОВЕРЯЕМ, ЗАРЕГАН ЛИ
   try {
-    const res = await fetch(`${API_URL}?userId=${encodeURIComponent(userId)}`);
+    const checkRes = await fetch(
+      `${API_URL}?action=check_user&userId=${encodeURIComponent(userId)}`
+    );
+    const checkData = await checkRes.json();
 
-    if (!res.ok) throw new Error("HTTP " + res.status);
-
-    const data = await res.json();
-
-    if (!data.success) {
-      document.getElementById('loading').textContent = `❌ ${data.error}`;
+    if (!checkData.success) {
+      document.getElementById('loading').textContent =
+        '❌ Вы не зарегистрированы';
       return;
     }
+
+    // 👉 ЕСЛИ ВСЁ ОК — ГРУЗИМ ЛК
+    await loadCabinet();
+
+  } catch (e) {
+    console.error(e);
+    document.getElementById('loading').textContent =
+      '❌ Ошибка соединения';
+  }
+}
+async function loadCabinet() {
+  try {
+    const res = await fetch(`${API_URL}?userId=${encodeURIComponent(userId)}`);
+    if (!res.ok) throw new Error();
+
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
 
     const u = data.user;
     username = u.username || "";
@@ -50,7 +69,7 @@ async function loadData() {
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
 
-    // ===== Уроки =====
+    // уроки
     const lessonsList = document.getElementById('lessons-list');
     lessonsList.innerHTML = data.lessons.length
       ? data.lessons.map(l => `
@@ -62,34 +81,29 @@ async function loadData() {
       `).join('')
       : '<p>Нет доступных уроков.</p>';
 
-    // ===== Магазин =====
+    // магазин
     const shopItems = document.getElementById('shop-items');
     document.getElementById('shop-coins').textContent = u.coins;
 
-    shopItems.innerHTML = data.shop.length
-      ? data.shop.map((item, idx) => `
-        <div class="shop-item">
-          ${item.image ? `
-            <div style="height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem">
-              <img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain">
-            </div>` : ''
-          }
-          <h3>${item.name}</h3>
-          <div class="price">${item.price} монет</div>
-          <button onclick="confirmBuy(${idx}, \`${item.name.replace(/'/g, "\\'")}\`, ${item.price})">
-            Купить
-          </button>
-        </div>
-      `).join('')
-      : '<p>Магазин пуст.</p>';
+    shopItems.innerHTML = data.shop.map((item, idx) => `
+      <div class="shop-item">
+        ${item.image ? `<img src="${item.image}">` : ''}
+        <h3>${item.name}</h3>
+        <div class="price">${item.price} монет</div>
+        <button onclick="confirmBuy(${idx}, '${item.name}', ${item.price})">
+          Купить
+        </button>
+      </div>
+    `).join('');
 
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('main').classList.remove('hidden');
     showSection('profile');
 
-  } catch (err) {
-    console.error(err);
-    document.getElementById('loading').textContent = '❌ Ошибка соединения с сервером';
+  } catch (e) {
+    console.error(e);
+    document.getElementById('loading').textContent =
+      '❌ Ошибка загрузки кабинета';
   }
 }
 
