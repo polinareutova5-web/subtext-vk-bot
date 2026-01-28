@@ -220,3 +220,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("main").classList.add("hidden");
   }
 });
+<input id="idInput" placeholder="Введите ID">
+<button onclick="enterById()">Войти</button>
+function enterById() {
+  const id = document.getElementById("idInput").value.trim();
+  if (!id) {
+    alert("Введите ID");
+    return;
+  }
+
+  // редирект сразу в ЛК
+  window.location.href = `/?id=${encodeURIComponent(id)}`;
+}
