@@ -205,3 +205,18 @@ async function buyItem(index) {
 }
 
 loadData();
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (id) {
+    // сразу идем в ЛК
+    document.getElementById("start").classList.add("hidden");
+    document.getElementById("loading").classList.remove("hidden");
+    loadData();
+  } else {
+    // показываем стартовую
+    document.getElementById("start").classList.remove("hidden");
+    document.getElementById("main").classList.add("hidden");
+  }
+});
