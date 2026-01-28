@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
 
-  <!-- Шрифт для названия -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <!-- Шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
       background-color: #faf9f6;
       color: #333;
@@ -22,14 +22,14 @@
 
     /* ===== HEADER ===== */
     .header {
-      width: 100vw;
-      height: 280px;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0')
+      width: 100%;
+      height: 260px;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png')
         no-repeat center center;
       background-size: cover;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       position: relative;
     }
 
@@ -43,41 +43,19 @@
         rgba(255,255,255,0.25),
         rgba(255,255,255,0.85)
       );
-      z-index: 1;
-    }
-
-    /* ===== BIG TITLE ===== */
-    .big-title-container {
-      position: relative;
-      z-index: 2;
     }
 
     .big-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 6rem;
-  color: rgba(255, 255, 255, 0.85);
-  text-align: center;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  /* тёмно-зелёная подсветка */
-  text-shadow:
-    2px 2px 0 rgba(0,60,0,0.7),
-    0 4px 12px rgba(0,0,0,0.15),
-    0 8px 20px rgba(0,0,0,0.1);
-  backdrop-filter: blur(6px);
-  padding: 1rem 2rem;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.big-title:hover {
-  transform: scale(1.05);
-  text-shadow:
-    3px 3px 0 rgba(0,60,0,0.75),
-    0 6px 16px rgba(0,0,0,0.2),
-    0 12px 36px rgba(0,0,0,0.15);
-}
-
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow:
+        2px 2px 0 rgba(0,60,0,0.7),
+        0 6px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
 
     /* ===== NAV ===== */
     .nav-container {
@@ -88,13 +66,11 @@
       padding: .5rem 1rem;
       justify-content: center;
       flex-wrap: wrap;
-      position: relative;
-      z-index: 2;
     }
 
     .nav-container button {
       min-width: 150px;
-      height: 55px;
+      height: 50px;
       border: none;
       border-radius: 999px;
       background: linear-gradient(135deg, #2e7d32, #66bb6a);
@@ -102,12 +78,22 @@
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 6px 14px rgba(46,125,50,.25);
-      transition: all .25s ease;
+      transition: .25s ease;
     }
 
     .nav-container button:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(46,125,50,.35);
+    }
+
+    /* ===== SECTION TITLE ===== */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      text-align: center;
+      color: #2e7d32;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 12px rgba(46,125,50,.25);
     }
 
     /* ===== SECTIONS ===== */
@@ -117,7 +103,7 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -141,23 +127,29 @@
       margin-bottom: 1rem;
     }
 
-    /* ===== GLASS CARDS ===== */
-    .lessons-grid,
-    .shop-grid {
+    /* ===== GRIDS ===== */
+    .lessons-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr); /* ровно 4 товара в ряд */
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 1.2rem;
     }
 
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+
+    /* ===== CARDS ===== */
     .lesson-card,
     .shop-item {
-      background: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.6);
       backdrop-filter: blur(10px);
       border-radius: 18px;
       padding: 1.4rem;
       text-align: center;
       box-shadow: 0 8px 24px rgba(0,0,0,.1);
-      transition: all .25s ease;
+      transition: .25s ease;
     }
 
     .lesson-card:hover,
@@ -166,43 +158,35 @@
       box-shadow: 0 14px 30px rgba(0,0,0,.15);
     }
 
-    /* ===== LESSON BUTTONS ===== */
+    /* ===== LESSON BUTTON ===== */
     .lesson-btn {
       display: inline-block;
-      margin-top: .6rem;
-      padding: .6rem 1.4rem;
+      margin-top: .8rem;
+      padding: .6rem 1.6rem;
       border-radius: 999px;
       background: linear-gradient(135deg, #2e7d32, #43a047);
       color: #fff;
       text-decoration: none;
       font-weight: 600;
       box-shadow: 0 6px 14px rgba(46,125,50,.25);
-      transition: all .25s ease;
     }
 
-    .lesson-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(46,125,50,.35);
-    }
-
-    /* ===== BUTTONS ===== */
-    button[type="button"],
+    /* ===== BUY BUTTON ===== */
     .buy-btn {
-      background: linear-gradient(135deg, #2e7d32, #43a047);
+      margin-top: .8rem;
+      padding: .7rem 1.8rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1b5e20, #66bb6a);
       color: #fff;
       border: none;
-      border-radius: 999px;
-      padding: .7rem 1.6rem;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 6px 14px rgba(46,125,50,.25);
-      transition: all .25s ease;
+      box-shadow: 0 8px 20px rgba(27,94,32,.35);
+      transition: .25s ease;
     }
 
-    button:hover,
     .buy-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(46,125,50,.35);
+      transform: scale(1.05);
     }
 
     textarea, input[type="file"] {
@@ -212,16 +196,19 @@
       border: 1px solid #ccc;
     }
 
-    h2 { text-align: center; }
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+      .big-title { font-size: 3.5rem; }
+      .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
   </style>
 </head>
 
 <body>
 
   <div class="header">
-    <div class="big-title-container">
-      <h1 class="big-title">Subtext</h1>
-    </div>
+    <div class="big-title">Subtext</div>
   </div>
 
   <div id="loading">Загрузка...</div>
@@ -229,11 +216,11 @@
   <div id="main" class="hidden">
 
     <div class="nav-container">
-      <button onclick="showSection('profile')">👤 Профиль</button>
-      <button onclick="showSection('lessons')">📚 Уроки</button>
-      <button onclick="showSection('homework')">📤 ДЗ</button>
-      <button onclick="showSection('shop')">🛒 Магазин</button>
-      <button onclick="showSection('schedule')">📅 Расписание</button>
+      <button onclick="showSection('profile')">Профиль</button>
+      <button onclick="showSection('lessons')">Уроки</button>
+      <button onclick="showSection('homework')">ДЗ</button>
+      <button onclick="showSection('shop')">Магазин</button>
+      <button onclick="showSection('schedule')">Расписание</button>
     </div>
 
     <div id="profile" class="section profile-section">
@@ -244,20 +231,20 @@
     </div>
 
     <div id="lessons" class="section hidden">
-      <h2>📚 Уроки</h2>
+      <div class="section-title">Уроки</div>
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
     <div id="homework" class="section hidden">
-      <h2>📤 Сдать ДЗ</h2>
+      <div class="section-title">Сдать домашнее задание</div>
       <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
       <input type="file" id="hwImage"><br><br>
-      <button type="button" onclick="submitHomework()">Отправить ДЗ</button>
+      <button class="buy-btn" onclick="submitHomework()">Отправить</button>
       <p id="hwStatus"></p>
     </div>
 
     <div id="shop" class="section hidden">
-      <h2>🛒 Магазин</h2>
+      <div class="section-title">Магазин</div>
       <p style="text-align:center;font-weight:bold">
         💰 Монеты: <span id="shop-coins">0</span>
       </p>
@@ -265,8 +252,8 @@
     </div>
 
     <div id="schedule" class="section hidden">
-      <h2>📅 Расписание</h2>
-      <p>Индивидуальное расписание пока не задано.</p>
+      <div class="section-title">Расписание</div>
+      <p style="text-align:center">Индивидуальное расписание пока не задано.</p>
     </div>
 
   </div>
