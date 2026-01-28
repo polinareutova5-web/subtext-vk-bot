@@ -104,7 +104,60 @@ document.getElementById('lesson-schedule').textContent =
     document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
   }
 }
+async function loadSlots() {
+  const res = await fetch(`${API_URL}?action=get_slots`);
+  const data = await res.json();
 
+  const box = document.getElementById("slots");
+  box.innerHTML = "";
+
+  data.slots.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className = "slot-btn";
+    btn.textContent = `${s.date} · ${s.time}`;
+    btn.onclick = () => bookSlot(s.id);
+    box.appendChild(btn);
+  });
+}
+async function bookSlot(slotId) {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "book_slot",
+      slotId,
+      userId,
+      username
+    })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    alert("Вы записались!");
+    loadSlots();
+  } else {
+    alert(data.error);
+  }
+}
+async function cancelSlot(slotId) {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "cancel_slot",
+      slotId,
+      userId
+    })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    alert("Запись отменена");
+    loadSlots();
+  } else {
+    alert(data.error);
+  }
+}
 // ================= HOMEWORK =================
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
