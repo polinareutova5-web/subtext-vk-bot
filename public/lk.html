@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -30,31 +31,22 @@
       background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.25), rgba(255,255,255,0.85));
     }
     .big-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 6rem;
-  color: rgba(255, 255, 255, 0.85);
-  text-align: center;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  /* тёмно-зелёная подсветка */
-  text-shadow:
-    2px 2px 0 rgba(0,60,0,0.7),
-    0 4px 12px rgba(0,0,0,0.15),
-    0 8px 20px rgba(0,0,0,0.1);
-  backdrop-filter: blur(6px);
-  padding: 1rem 2rem;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.big-title:hover {
-  transform: scale(1.05);
-  text-shadow:
-    3px 3px 0 rgba(0,60,0,0.75),
-    0 6px 16px rgba(0,0,0,0.2),
-    0 12px 36px rgba(0,0,0,0.15);
-}
-
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      color: rgba(255, 255, 255, 0.85);
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0 rgba(0,60,0,0.7), 0 4px 12px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.1);
+      backdrop-filter: blur(6px);
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    .big-title:hover {
+      transform: scale(1.05);
+      text-shadow: 3px 3px 0 rgba(0,60,0,0.75), 0 6px 16px rgba(0,0,0,0.2), 0 12px 36px rgba(0,0,0,0.15);
+    }
 
     /* ===== NAV ===== */
     .nav-container {
@@ -176,6 +168,24 @@
       border: 1px solid #ccc;
     }
 
+    /* ===== SLOTS ===== */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 1rem;
+    }
+    .slot-btn {
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: #e8f5e9;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .slot-btn:hover { background: #c8e6c9; }
+
     @media (max-width: 1024px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 768px) { 
       .big-title { font-size: 3.5rem; }
@@ -186,24 +196,6 @@
       .section-title { font-size: 1.6rem; }
     }
 
-    .slots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-}
-
-.slot-btn {
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  background: #e8f5e9;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.slot-btn:hover {
-  background: #c8e6c9;
-}
   </style>
 </head>
 
@@ -225,6 +217,7 @@
       <button onclick="showSection('schedule')">Расписание</button>
     </div>
 
+    <!-- ===== PROFILE ===== -->
     <div id="profile" class="section profile-section">
       <img id="avatar-img" class="avatar-img">
       <p>Привет, <strong id="username"></strong>!</p>
@@ -232,11 +225,13 @@
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
     </div>
 
+    <!-- ===== LESSONS ===== -->
     <div id="lessons" class="section hidden">
       <div class="section-title">Уроки</div>
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
+    <!-- ===== HOMEWORK ===== -->
     <div id="homework" class="section hidden">
       <div class="section-title">Сдать домашнее задание</div>
       <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
@@ -245,6 +240,7 @@
       <p id="hwStatus"></p>
     </div>
 
+    <!-- ===== SHOP ===== -->
     <div id="shop" class="section hidden">
       <div class="section-title">Магазин</div>
       <p style="text-align:center;font-weight:bold">
@@ -253,23 +249,26 @@
       <div id="shop-items" class="shop-grid"></div>
     </div>
 
+    <!-- ===== SCHEDULE ===== -->
     <div id="schedule" class="section hidden">
-  <div class="section-title">Расписание</div>
+      <div class="section-title">Расписание</div>
 
-  <div class="profile-section">
-    <p><strong>Ссылка:</strong></p>
-    <p id="lesson-link">—</p>
+      <div class="profile-section">
+        <p><strong>Ссылка:</strong></p>
+        <p id="lesson-link">—</p>
 
-    <hr style="margin:1.5rem 0">
+        <hr style="margin:1.5rem 0">
 
-    <p><strong>Расписание:</strong></p>
-    <p id="lesson-schedule">—</p>
+        <p><strong>Расписание:</strong></p>
+        <p id="lesson-schedule">—</p>
+      </div>
+
+      <div id="slots" class="slots-grid"></div>
+
+      <div id="mySlot" style="margin-top:1rem;text-align:center;font-weight:600"></div>
+    </div>
+
   </div>
-
-  <div id="slots" class="slots-grid"></div>
-
-  <div id="mySlot"></div>
-</div>
 
   <script src="script.js"></script>
 </body>
