@@ -56,7 +56,6 @@ async function loadCabinet() {
     const u = data.user;
     username = u.username || "";
 
-    // ===== PROFILE =====
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
@@ -67,7 +66,7 @@ async function loadCabinet() {
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
 
-    // ===== LESSONS =====
+    // ===== Уроки =====
     const lessonsList = document.getElementById('lessons-list');
     lessonsList.innerHTML = data.lessons.length
       ? data.lessons.map(l => `
@@ -79,15 +78,13 @@ async function loadCabinet() {
       `).join('')
       : '<p>Нет доступных уроков.</p>';
 
-    // ===== SHOP =====
+    // ===== Магазин =====
     const shopItems = document.getElementById('shop-items');
     document.getElementById('shop-coins').textContent = u.coins;
     shopItems.innerHTML = data.shop.length
       ? data.shop.map((item, idx) => `
         <div class="shop-item">
-          ${item.image ? `<div style="height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem">
-            <img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain">
-          </div>` : ''}
+          ${item.image ? `<div style="height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem"><img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain"></div>` : ''}
           <h3>${item.name}</h3>
           <div class="price">${item.price} монет</div>
           <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
@@ -99,84 +96,13 @@ async function loadCabinet() {
     document.getElementById('main').classList.remove('hidden');
     showSection('profile');
 
-    // ===== SLOTS =====
+    // ===== СЛОТЫ =====
     await loadSlots();
+    await loadMySlot();
 
   } catch (e) {
     console.error(e);
     document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
-  }
-}
-
-// ================= SLOTS =================
-async function loadSlots() {
-  try {
-    const res = await fetch(`${API_URL}?action=get_slots`);
-    const data = await res.json();
-    if (!data.slots) return;
-
-    const container = document.getElementById("slots");
-    container.innerHTML = "";
-
-    data.slots.forEach(slot => {
-      const btn = document.createElement("button");
-      btn.className = "slot-btn";
-
-      if (slot.user && slot.user !== username) {
-        btn.textContent = `${slot.date} · ${slot.time} (Занято)`;
-        btn.disabled = true;
-      } else if (slot.user === username) {
-        btn.textContent = `${slot.date} · ${slot.time} (Ваш слот)`;
-        btn.onclick = () => cancelSlot(slot.id);
-      } else {
-        btn.textContent = `${slot.date} · ${slot.time} (Свободно)`;
-        btn.onclick = () => bookSlot(slot.id);
-      }
-
-      container.appendChild(btn);
-    });
-
-  } catch (e) {
-    console.error(e);
-    document.getElementById("slots").innerHTML = "<p>❌ Ошибка загрузки слотов</p>";
-  }
-}
-
-async function bookSlot(slotId) {
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "book_slot", slotId, userId, username })
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert("Вы записались!");
-      loadSlots();
-    } else {
-      alert(data.error);
-    }
-  } catch {
-    alert("❌ Ошибка соединения");
-  }
-}
-
-async function cancelSlot(slotId) {
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "cancel_slot", slotId, userId })
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert("Запись отменена");
-      loadSlots();
-    } else {
-      alert(data.error);
-    }
-  } catch {
-    alert("❌ Ошибка соединения");
   }
 }
 
@@ -231,5 +157,105 @@ async function buyItem(index) {
   } catch { alert("❌ Ошибка соединения"); }
 }
 
+// ================= SLOTS =================
+async function loadSlots() {
+  try {
+    const res = await fetch(`${API_URL}?action=get_slots`);
+    const data = await res.json();
+
+    const box = document.getElementById("slots");
+    box.innerHTML = "";
+
+    data.slots.forEach(s => {
+      const btn = document.createElement("button");
+      btn.className = "slot-btn";
+      btn.textContent = `${s.date} · ${s.time}`;
+
+      btn.onclick = async () => {
+        if (!confirm(`Хотите записаться на слот?\n${s.date} · ${s.time}`)) return;
+
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "book_slot",
+              slotId: s.id,
+              userId,
+              username
+            })
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert("✅ Вы записались!");
+            loadSlots();
+            loadMySlot();
+          } else {
+            alert("❌ " + (data.error || "Ошибка"));
+          }
+        } catch (e) {
+          console.error(e);
+          alert("❌ Ошибка соединения с сервером");
+        }
+      };
+
+      box.appendChild(btn);
+    });
+  } catch (e) {
+    console.error(e);
+    document.getElementById("slots").innerHTML = "<p>❌ Ошибка загрузки слотов</p>";
+  }
+}
+
+async function loadMySlot() {
+  try {
+    const res = await fetch(`${API_URL}?action=get_slots&userId=${userId}`);
+    const data = await res.json();
+
+    const mySlotDiv = document.getElementById("mySlot");
+    const slot = data.mySlot;
+    if (slot) {
+      mySlotDiv.innerHTML = `
+        <p><strong>Ваш слот:</strong> ${slot.date} · ${slot.time}</p>
+        <button onclick="cancelMySlot(${slot.id})">Отменить</button>
+      `;
+    } else {
+      mySlotDiv.innerHTML = "<p>Вы ещё не записаны на слот</p>";
+    }
+  } catch (e) {
+    console.error(e);
+    document.getElementById("mySlot").innerHTML = "<p>❌ Ошибка загрузки вашего слота</p>";
+  }
+}
+
+async function cancelMySlot(slotId) {
+  if (!confirm("Вы действительно хотите отменить запись?")) return;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "cancel_slot",
+        slotId,
+        userId
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert("✅ Запись отменена");
+      loadSlots();
+      loadMySlot();
+    } else {
+      alert("❌ " + (data.error || "Ошибка"));
+    }
+  } catch (e) {
+    console.error(e);
+    alert("❌ Ошибка соединения");
+  }
+}
+
 // ================= INIT =================
-document.addEventListener("DOMContentLoaded", () => loadData());
+document.addEventListener("DOMContentLoaded", () => {
+  loadData();
+});
