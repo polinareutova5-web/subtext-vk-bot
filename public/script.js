@@ -60,6 +60,11 @@ async function loadCabinet() {
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
+    document.getElementById('lesson-link').textContent =
+  u.link ? u.link : "Не указана";
+
+document.getElementById('lesson-schedule').textContent =
+  u.schedule ? u.schedule : "Не указано";
 
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
