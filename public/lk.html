@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -400,6 +400,11 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      display: none; /* Изначально скрыто */
+    }
+
+    .modal-overlay.active {
+      display: flex;
     }
 
     .modal {
@@ -501,7 +506,7 @@
       <button onclick="showSection('homework')">ДЗ</button>
       <button onclick="showSection('shop')">Магазин</button>
       <button onclick="showSection('schedule')">Расписание</button>
-      <button onclick="showSection('slots')">Слоты</button>
+      <button onclick="showSlotsSection()">Слоты</button>
     </div>
 
     <div id="profile" class="section profile-section">
@@ -573,7 +578,7 @@
   </div>
 
   <!-- Модальное окно подтверждения -->
-  <div id="confirmationModal" class="modal-overlay hidden">
+  <div id="confirmationModal" class="modal-overlay">
     <div class="modal">
       <h3>Подтверждение записи</h3>
       <div class="modal-info">
@@ -698,6 +703,11 @@ async function loadCabinet() {
 }
 
 // ================= СЛОТЫ РАСПИСАНИЯ =================
+function showSlotsSection() {
+  showSection('slots');
+  loadSlots();
+}
+
 async function loadSlots() {
   try {
     // Показываем загрузку
@@ -710,9 +720,13 @@ async function loadSlots() {
     const availableRes = await fetch(`${API_URL}?action=get_slots`);
     const availableData = await availableRes.json();
     
+    console.log('Доступные слоты:', availableData);
+    
     // Загружаем слоты пользователя
     const userSlotsRes = await fetch(`${API_URL}?action=get_user_slots&userId=${encodeURIComponent(userId)}`);
     const userSlotsData = await userSlotsRes.json();
+    
+    console.log('Слоты пользователя:', userSlotsData);
     
     // Отображаем доступные слоты
     if (availableData.success) {
@@ -741,7 +755,7 @@ async function loadSlots() {
       }
     } else {
       document.getElementById('available-slots-container').innerHTML = 
-        '<p class="slots-error">❌ Ошибка загрузки доступных слотов</p>';
+        '<p class="slots-error">❌ Ошибка загрузки доступных слотов: ' + (availableData.error || 'Неизвестная ошибка') + '</p>';
     }
     
     // Отображаем слоты пользователя
@@ -773,7 +787,7 @@ async function loadSlots() {
       }
     } else {
       document.getElementById('user-slots-container').innerHTML = 
-        '<p class="slots-error">❌ Ошибка загрузки ваших слотов</p>';
+        '<p class="slots-error">❌ Ошибка загрузки ваших слотов: ' + (userSlotsData.error || 'Неизвестная ошибка') + '</p>';
     }
     
   } catch (error) {
@@ -795,12 +809,12 @@ function showBookingConfirmation(slotId, date, time) {
   
   document.getElementById('modalDate').textContent = date;
   document.getElementById('modalTime').textContent = time;
-  document.getElementById('confirmationModal').classList.remove('hidden');
+  document.getElementById('confirmationModal').classList.add('active');
 }
 
 // Закрыть модальное окно
 function hideModal() {
-  document.getElementById('confirmationModal').classList.add('hidden');
+  document.getElementById('confirmationModal').classList.remove('active');
   selectedSlot = null;
 }
 
