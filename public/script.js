@@ -113,7 +113,8 @@ async function loadCabinet() {
 
 // ================= СЛОТЫ =================
 async function loadSlots() {
-  const container = document.getElementById('lesson-schedule');
+  const container = document.getElementById('slots-container');
+
 
   container.innerHTML = "Загрузка слотов...";
 
