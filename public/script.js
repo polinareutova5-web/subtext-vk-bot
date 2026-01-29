@@ -1,5 +1,4 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbwkkeJGpyYNL7mZ57jrEwRbqOXuCc_COhp3NWvW6BhngcHFy5GxRYuR1R47CX1w01UJIQ/exec";
-
 let userId;
 let username = "";
 
@@ -45,161 +44,154 @@ async function loadData() {
 
 // ================= CABINET =================
 async function loadCabinet() {
-  try {
-    const res = await fetch(`${API_URL}?userId=${encodeURIComponent(userId)}`);
-    const data = await res.json();
-    if (!data.success) throw new Error(data.error);
+  const res = await fetch(`${API_URL}?userId=${encodeURIComponent(userId)}`);
+  const data = await res.json();
+  if (!data.success) throw new Error(data.error);
 
-    const u = data.user;
-    username = u.username || "";
+  const u = data.user;
+  username = u.username || "";
 
-    document.getElementById('username').textContent = u.username || '—';
-    document.getElementById('level').textContent = u.level || '—';
-    document.getElementById('progress').textContent = u.progress || 0;
-    document.getElementById('coins').textContent = u.coins || 0;
-    document.getElementById('lesson-link').textContent = u.link || "Не указана";
-    document.getElementById('lesson-schedule').textContent = u.schedule || "Не указано";
+  document.getElementById('username').textContent = u.username || '—';
+  document.getElementById('level').textContent = u.level || '—';
+  document.getElementById('progress').textContent = u.progress || 0;
+  document.getElementById('coins').textContent = u.coins || 0;
+  document.getElementById('lesson-link').textContent = u.link || "Не указана";
+  document.getElementById('lesson-schedule').textContent = u.schedule || "Не указано";
 
-    const avatarImg = document.getElementById('avatar-img');
-    avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
+  document.getElementById('avatar-img').src =
+    u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
 
-    const lessonsList = document.getElementById('lessons-list');
-    lessonsList.innerHTML = data.lessons.length
-      ? data.lessons.map(l => `
-        <div class="lesson-card">
-          <strong>Урок ${l.num}</strong><br>
-          <a href="${l.link}" target="_blank">Материалы</a>
-          ${l.hwLink && l.hwLink !== '-' ? `<br><a href="${l.hwLink}" target="_blank">ДЗ</a>` : ''}
-        </div>
-      `).join('')
-      : '<p>Нет доступных уроков.</p>';
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('main').classList.remove('hidden');
+  showSection('profile');
 
-    const shopItems = document.getElementById('shop-items');
-    document.getElementById('shop-coins').textContent = u.coins;
-    shopItems.innerHTML = data.shop.length
-      ? data.shop.map((item, idx) => `
-        <div class="shop-item">
-          ${item.image ? `<div style="height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem"><img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain"></div>` : ''}
-          <h3>${item.name}</h3>
-          <div class="price">${item.price} монет</div>
-          <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
-        </div>
-      `).join('')
-      : '<p>Магазин пуст.</p>';
-
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('main').classList.remove('hidden');
-    showSection('profile');
-
-    await loadSlots();
-
-  } catch (e) {
-    console.error(e);
-    document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
-  }
+  await loadSlots();
 }
 
 // ================= SLOTS =================
 async function loadSlots() {
-  try {
-    const res = await fetch(`${API_URL}?action=get_slots&userId=${encodeURIComponent(userId)}`);
-    const data = await res.json();
-    if (!data.success) throw new Error();
+  const res = await fetch(`${API_URL}?action=get_slots&userId=${encodeURIComponent(userId)}`);
+  const data = await res.json();
+  if (!data.success) throw new Error();
 
-    const box = document.getElementById("slots");
-    box.innerHTML = `<h3 style="grid-column:1/-1;text-align:center;margin-bottom:.5rem">СЛОТЫ</h3>`;
+  const box = document.getElementById("slots");
+  box.innerHTML = `<h3 style="grid-column:1/-1;text-align:center">СЛОТЫ</h3>`;
 
-    const hasMySlot = !!data.mySlot;
+  const hasMySlot = !!data.mySlot;
 
-    data.slots.forEach(s => {
-      const btn = document.createElement("button");
-      btn.className = "slot-btn";
-      btn.style.padding = "8px";
-      btn.style.fontSize = "0.9rem";
-      btn.textContent = `${s.date} · ${s.time}`;
+  data.slots.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className = "slot-btn";
+    btn.textContent = `${s.date} · ${s.time}`;
 
-      if (hasMySlot) {
-        btn.disabled = true;
-        btn.style.opacity = "0.5";
-      } else {
-        btn.onclick = () => {
-          if (confirm(`Записаться на ${s.date} · ${s.time}?`)) {
-            bookSlot(s.id);
-          }
-        };
-      }
-
-      box.appendChild(btn);
-    });
-
-    const mySlotDiv = document.getElementById("mySlot");
-    if (data.mySlot) {
-      mySlotDiv.innerHTML = `
-        <p style="color:#b71c1c">
-          ❤️ Ваш слот: <strong>${data.mySlot.date} · ${data.mySlot.time}</strong><br>
-          <button onclick="cancelSlot('${data.mySlot.id}')" style="margin-top:.5rem">Отменить</button>
-        </p>`;
+    if (hasMySlot) {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
     } else {
-      mySlotDiv.innerHTML = "<p>Вы ещё не записаны на слот</p>";
+      btn.onclick = () => {
+        if (confirm(`Записаться на ${s.date} · ${s.time}?`)) {
+          bookSlot(s.id);
+        }
+      };
     }
 
-  } catch (e) {
-    console.error(e);
-    alert("Ошибка соединения с сервером при загрузке слотов");
+    box.appendChild(btn);
+  });
+
+  const mySlotDiv = document.getElementById("mySlot");
+  if (data.mySlot) {
+    mySlotDiv.innerHTML = `
+      <p style="color:#b71c1c">
+        ❤️ Ваш слот: <strong>${data.mySlot.date} · ${data.mySlot.time}</strong><br>
+        <button onclick="cancelSlot('${data.mySlot.id}')">Отменить</button>
+      </p>`;
+  } else {
+    mySlotDiv.innerHTML = "<p>Вы ещё не записаны на слот</p>";
   }
 }
 
 async function bookSlot(slotId) {
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "book_slot", slotId, userId, username })
-    });
-
-    const data = await res.json();
-    alert(data.success ? "✅ Вы записались на слот!" : "❌ " + data.error);
-    loadSlots();
-
-  } catch (e) {
-    console.error(e);
-    alert("❌ Ошибка соединения при записи");
-  }
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "book_slot", slotId, userId, username })
+  });
+  const data = await res.json();
+  alert(data.success ? "✅ Вы записались!" : "❌ " + data.error);
+  loadSlots();
 }
 
 async function cancelSlot(slotId) {
   if (!confirm("Отменить слот?")) return;
 
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "cancel_slot", slotId, userId })
-    });
-
-    const data = await res.json();
-    alert(data.success ? "✅ Слот отменён" : "❌ " + data.error);
-    loadSlots();
-
-  } catch (e) {
-    console.error(e);
-    alert("❌ Ошибка соединения при отмене");
-  }
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "cancel_slot", slotId, userId })
+  });
+  const data = await res.json();
+  alert(data.success ? "✅ Слот отменён" : "❌ " + data.error);
+  loadSlots();
 }
 
-// ================= HOMEWORK =================
+// ================= HOMEWORK (ВОССТАНОВЛЕНО) =================
 async function submitHomework() {
-  /* без изменений */
+  const text = document.getElementById('hwText').value.trim();
+  const fileInput = document.getElementById('hwImage');
+  const file = fileInput.files[0];
+
+  if (!file && !text) {
+    alert("Введите текст или прикрепите фото");
+    return;
+  }
+
+  try {
+    if (file) {
+      const base64 = await new Promise(resolve => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result.split(",")[1]);
+        r.readAsDataURL(file);
+      });
+
+      const payload = {
+        action: "submit_homework",
+        userId,
+        username,
+        lessonNum: 0,
+        text,
+        fileName: file.name,
+        fileBase64: base64
+      };
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      document.getElementById('hwStatus').textContent =
+        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
+
+    } else {
+      const res = await fetch(
+        `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodeURIComponent(text)}&lessonNum=0`
+      );
+      const data = await res.json();
+      document.getElementById('hwStatus').textContent =
+        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
+    }
+  } catch {
+    document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
+  }
 }
 
 // ================= SHOP =================
 async function buyItem(index) {
-  try {
-    const res = await fetch(`${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`);
-    const data = await res.json();
-    if (data.success) { alert("✅ Куплено!"); location.reload(); }
-    else alert("❌ " + data.error);
-  } catch { alert("❌ Ошибка соединения"); }
+  const res = await fetch(`${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`);
+  const data = await res.json();
+  alert(data.success ? "✅ Куплено!" : "❌ " + data.error);
+  if (data.success) location.reload();
 }
 
 // ================= INIT =================
