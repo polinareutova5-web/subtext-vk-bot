@@ -112,6 +112,16 @@ async function loadCabinet() {
 }
 
 // ================= СЛОТЫ =================
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function formatTime(timeStr) {
+  const d = new Date(timeStr);
+  return d.toISOString().slice(11, 16); // HH:MM
+}
+
 async function loadSlots() {
   const container = document.getElementById('slots-container');
 
@@ -140,7 +150,8 @@ async function loadSlots() {
       return `
         <div style="margin-bottom:.8rem;padding:.8rem;border-radius:12px;
           background:${isFree ? '#e8f5e9' : '#eee'}">
-          <strong>${slot.date}</strong> — ${slot.time}<br>
+         <strong>${formatDate(slot.date)}</strong> ${formatTime(slot.time)}<br>
+
           ${isFree
             ? `<button class="buy-btn" onclick="bookSlot(${slot.id})">Записаться</button>`
             : `<span style="opacity:.6">Занято</span>`
