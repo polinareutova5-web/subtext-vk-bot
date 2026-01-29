@@ -1,8 +1,8 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbwkkeJGpyYNL7mZ57jrEwRbqOXuCc_COhp3NWvW6BhngcHFy5GxRYuR1R47CX1w01UJIQ/exec";
+
 let userId;
 let username = "";
 
-// ================= UI =================
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
   const el = document.getElementById(sectionId);
@@ -15,7 +15,6 @@ function confirmBuy(index, name, price) {
   }
 }
 
-// ================= LOAD DATA =================
 async function loadData() {
   const params = new URLSearchParams(window.location.search);
   userId = params.get('id');
@@ -29,7 +28,7 @@ async function loadData() {
     const checkRes = await fetch(`${API_URL}?action=check_user&userId=${encodeURIComponent(userId)}`);
     const checkData = await checkRes.json();
 
-    if (!checkData.success) {
+    if (!checkData.exists) {
       document.getElementById('loading').textContent = '❌ Вы не зарегистрированы';
       return;
     }
@@ -42,7 +41,6 @@ async function loadData() {
   }
 }
 
-// ================= CABINET =================
 async function loadCabinet() {
   const res = await fetch(`${API_URL}?userId=${encodeURIComponent(userId)}`);
   const data = await res.json();
@@ -68,7 +66,6 @@ async function loadCabinet() {
   await loadSlots();
 }
 
-// ================= SLOTS =================
 async function loadSlots() {
   const res = await fetch(`${API_URL}?action=get_slots&userId=${encodeURIComponent(userId)}`);
   const data = await res.json();
@@ -134,7 +131,6 @@ async function cancelSlot(slotId) {
   loadSlots();
 }
 
-// ================= HOMEWORK (ВОССТАНОВЛЕНО) =================
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
   const fileInput = document.getElementById('hwImage');
@@ -186,7 +182,6 @@ async function submitHomework() {
   }
 }
 
-// ================= SHOP =================
 async function buyItem(index) {
   const res = await fetch(`${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`);
   const data = await res.json();
@@ -194,5 +189,4 @@ async function buyItem(index) {
   if (data.success) location.reload();
 }
 
-// ================= INIT =================
 window.addEventListener("load", loadData);
