@@ -114,12 +114,17 @@ async function loadCabinet() {
 // ================= СЛОТЫ =================
 function formatDate(dateStr) {
   const d = new Date(dateStr);
-  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 function formatTime(timeStr) {
   const d = new Date(timeStr);
-  return d.toISOString().slice(11, 16); // HH:MM
+  const h = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return `${h}:${min}`;
 }
 
 async function loadSlots() {
