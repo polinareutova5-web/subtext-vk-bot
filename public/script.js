@@ -63,7 +63,10 @@ async function loadCabinet() {
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
-
+    // Прогресс-бар (баллы = проценты, максимум 100)
+const progressPercent = Math.min(Math.max(u.progress || 0, 0), 100);
+document.getElementById('progress-percent').textContent = progressPercent;
+document.getElementById('progress-bar-fill').style.width = `${progressPercent}%`;
     document.getElementById('lesson-link').textContent =
       u.link ? u.link : "Не указана";
 
