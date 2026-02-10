@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbw-mnkfwYKvjqLLgyw21ezcC78Dnyx5zAVwDA5dKm0iNtYN3Iczxfq9VpVQYNrtALQm6g/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbx3-76Q7HRy7jEO9h26ZHkZx9QY_x8vnZYeGg-bXTibovVx1nxPCVbOoeTY2pBrOMocnA/exec";
 
 
 let userId;
