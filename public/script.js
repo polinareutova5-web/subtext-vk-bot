@@ -216,27 +216,23 @@ async function buyItem(index) {
 }
 // ================= Mfterials=================
 
-async function loadMaterials() {
-  try {
-    const res = await fetch(`${API_URL}?action=get_materials`);
-    const data = await res.json();
-    
-    const container = document.getElementById('materials-list');
-    if (!data.success || !data.materials.length) {
-      container.innerHTML = '<p>Материалы скоро появятся</p>';
-      return;
-    }
+document.getElementById('loading').classList.add('hidden');
+// === МАТЕРИАЛЫ (загружаем сразу!) ===
+const materialsRes = await fetch(`${API_URL}?action=get_materials`);
+const materialsData = await materialsRes.json();
+const materialsList = document.getElementById('materials-list');
 
-    container.innerHTML = data.materials.map(item => `
-      <div class="lesson-card">
-        <strong>${item.title}</strong><br>
-        ${item.description ? `<small style="color:#666">${item.description}</small><br>` : ''}
-        <a href="${item.url}" target="_blank" class="lesson-btn">Открыть</a>
-      </div>
-    `).join('');
-  } catch (e) {
-    console.error(e);
-    document.getElementById('materials-list').innerHTML = '<p>❌ Не удалось загрузить материалы</p>';
+if (materialsData.success && materialsData.materials?.length) {
+  materialsList.innerHTML = materialsData.materials.map(item => `
+    <div class="lesson-card">
+      <strong>${item.title}</strong>
+      <a href="${item.url}" target="_blank">Открыть</a>
+      ${item.description ? `<small style="color:#666">${item.description}</small>` : ''}
+    </div>
+  `).join('');
+} else {
+  materialsList.innerHTML = '<p>Материалы скоро появятся</p>';
+}
   }
 } // ← ЭТА СКОБКА БЫЛА ПРОПУЩЕНА!
 
@@ -244,11 +240,6 @@ function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
   const el = document.getElementById(sectionId);
   if (el) el.classList.remove('hidden');
-
-  // Загружать материалы только при открытии
-  if (sectionId === 'materials') {
-    loadMaterials();
-  }
 }
 // ================= INIT =================
 window.addEventListener("DOMContentLoaded", loadData);
