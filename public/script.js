@@ -63,10 +63,12 @@ async function loadCabinet() {
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
+
     // Прогресс-бар (баллы = проценты, максимум 100)
-const progressPercent = Math.min(Math.max(u.progress || 0, 0), 100);
-document.getElementById('progress-percent').textContent = progressPercent;
-document.getElementById('progress-bar-fill').style.width = `${progressPercent}%`;
+    const progressPercent = Math.min(Math.max(u.progress || 0, 0), 100);
+    document.getElementById('progress-percent').textContent = progressPercent;
+    document.getElementById('progress-bar-fill').style.width = `${progressPercent}%`;
+
     document.getElementById('lesson-link').textContent =
       u.link ? u.link : "Не указана";
 
@@ -74,7 +76,23 @@ document.getElementById('progress-bar-fill').style.width = `${progressPercent}%`
       u.schedule ? u.schedule : "Не указано";
 
     const avatarImg = document.getElementById('avatar-img');
-    avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
+    avatarImg.src =
+      u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
+
+    // ===== ЗАГРУЖАЕМ МАТЕРИАЛЫ СРАЗУ ПРИ ВХОДЕ =====
+    await loadMaterials();
+
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('main').classList.remove('hidden');
+
+    showSection('profile');
+
+  } catch (e) {
+    console.error(e);
+    document.getElementById('loading').textContent =
+      '❌ Ошибка загрузки кабинета';
+  }
+}
 
     // ===== Уроки =====
     const lessonsList = document.getElementById('lessons-list');
@@ -215,12 +233,11 @@ async function buyItem(index) {
   }
 }
 // ================= Mfterials=================
-
 async function loadMaterials() {
   try {
     const res = await fetch(`${API_URL}?action=get_materials`);
     const data = await res.json();
-    
+
     const container = document.getElementById('materials-list');
     if (!data.success || !data.materials.length) {
       container.innerHTML = '<p>Материалы скоро появятся</p>';
@@ -236,17 +253,21 @@ async function loadMaterials() {
     `).join('');
   } catch (e) {
     console.error(e);
-    document.getElementById('materials-list').innerHTML = '<p>❌ Не удалось загрузить материалы</p>';
+    document.getElementById('materials-list').innerHTML =
+      '<p>❌ Не удалось загрузить материалы</p>';
   }
-} // ← ЭТА СКОБКА БЫЛА ПРОПУЩЕНА!
-
+}
 function showSection(sectionId) {
-  document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.section')
+    .forEach(el => el.classList.add('hidden'));
+
   const el = document.getElementById(sectionId);
   if (el) el.classList.remove('hidden');
 
-  // Загружать материалы при открытии сайта
- await loadMaterials();
+  if (sectionId === "schedule") {
+    loadSlots();
+  }
 }
+
 // ================= INIT =================
 window.addEventListener("DOMContentLoaded", loadData);
