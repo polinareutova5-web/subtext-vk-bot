@@ -61,6 +61,7 @@ async function loadCabinet() {
 
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
+    document.getElementById('coins').textContent = u.coins || 0;
     document.getElementById('progress').textContent = u.progress || 0;
     const progressValue = Math.min(u.progress || 0, 100);
 const xpFill = document.getElementById('xp-fill');
@@ -83,8 +84,6 @@ else {
   xpFill.style.background = "linear-gradient(90deg, #2e7d32, #66bb6a)";
   xpFill.style.boxShadow = "0 0 10px rgba(76,175,80,.6)";
 }
-
-    document.getElementById('coins').textContent = u.coins || 0;
 
     document.getElementById('lesson-link').textContent =
       u.link ? u.link : "Не указана";
