@@ -62,6 +62,9 @@ async function loadCabinet() {
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
+    const progressValue = Math.min(u.progress || 0, 100);
+const xpFill = document.getElementById('xp-fill');
+xpFill.style.width = progressValue + "%";
     document.getElementById('coins').textContent = u.coins || 0;
 
     document.getElementById('lesson-link').textContent =
