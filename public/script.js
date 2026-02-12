@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbx3-76Q7HRy7jEO9h26ZHkZx9QY_x8vnZYeGg-bXTibovVx1nxPCVbOoeTY2pBrOMocnA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxg2wdiriOOJns6oU2mZjK_S-v-KBkA4IdmORRusmoLJcyyO7pI-6zZFPm8wis2pcxSuw/exec";
 
 
 let userId;
@@ -63,10 +63,7 @@ async function loadCabinet() {
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
-    // Прогресс-бар (баллы = проценты, максимум 100)
-const progressPercent = Math.min(Math.max(u.progress || 0, 0), 100);
-document.getElementById('progress-percent').textContent = progressPercent;
-document.getElementById('progress-bar-fill').style.width = `${progressPercent}%`;
+
     document.getElementById('lesson-link').textContent =
       u.link ? u.link : "Не указана";
 
@@ -197,7 +194,70 @@ async function bookSlot(slotId) {
 }
 
 // ================= HOMEWORK =================
+async function submitHomework() {
+  const text = document.getElementById('hwText').value.trim();
+  const fileInput = document.getElementById('hwImage');
+  const file = fileInput.files[0];
 
+  if (!file && !text) {
+    alert("Введите текст или прикрепите фото");
+    return;
+  }
+
+  try {
+    if (file) {
+      if (!file.type.match(/image\/(jpeg|png|gif)/)) {
+        alert("Поддерживаются JPG, PNG, GIF");
+        return;
+      }
+
+      const base64 = await new Promise(resolve => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result.split(",")[1]);
+        r.readAsDataURL(file);
+      });
+
+      const payload = {
+        action: "submit_homework",
+        userId,
+        username,
+        lessonNum: 0,
+        text,
+        fileName: file.name,
+        fileBase64: base64
+      };
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      document.getElementById('hwStatus').textContent =
+        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
+
+      if (data.success) {
+        document.getElementById('hwText').value = "";
+        fileInput.value = "";
+      }
+
+    } else {
+      const res = await fetch(
+        `${API_URL}?action=submit_homework&userId=${encodeURIComponent(userId)}&homeworkText=${encodeURIComponent(text)}&lessonNum=0`
+      );
+
+      const data = await res.json();
+      document.getElementById('hwStatus').textContent =
+        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
+
+      if (data.success) document.getElementById('hwText').value = "";
+    }
+
+  } catch {
+    document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
+  }
+}
 
 // ================= SHOP =================
 async function buyItem(index) {
@@ -214,41 +274,6 @@ async function buyItem(index) {
     alert("❌ Ошибка соединения");
   }
 }
-// ================= Mfterials=================
 
-async function loadMaterials() {
-  try {
-    const res = await fetch(`${API_URL}?action=get_materials`);
-    const data = await res.json();
-    
-    const container = document.getElementById('materials-list');
-    if (!data.success || !data.materials.length) {
-      container.innerHTML = '<p>Материалы скоро появятся</p>';
-      return;
-    }
-
-    container.innerHTML = data.materials.map(item => `
-      <div class="lesson-card">
-        <strong>${item.title}</strong><br>
-        ${item.description ? `<small style="color:#666">${item.description}</small><br>` : ''}
-        <a href="${item.url}" target="_blank" class="lesson-btn">Открыть</a>
-      </div>
-    `).join('');
-  } catch (e) {
-    console.error(e);
-    document.getElementById('materials-list').innerHTML = '<p>❌ Не удалось загрузить материалы</p>';
-  }
-} // ← ЭТА СКОБКА БЫЛА ПРОПУЩЕНА!
-
-function showSection(sectionId) {
-  document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
-  const el = document.getElementById(sectionId);
-  if (el) el.classList.remove('hidden');
-
-  // Загружать материалы только при открытии
-  if (sectionId === 'materials') {
-    loadMaterials();
-  }
-}
 // ================= INIT =================
 window.addEventListener("DOMContentLoaded", loadData);
